@@ -1,0 +1,27 @@
+version: "3"
+services:
+  postgresdb:
+    image: "postgres:12-alpine"
+    container_name: pgdb-main
+    volumes:
+      - postgres-data:/var/lib/postgresql/dat
+    ports:
+      - 54323:5432
+    environment:
+      - POSTGRES_PASSWORD=81b310a8-da48-40b6-88a5-3604db65bace
+      - POSTGRES_USER=root
+      - POSTGRES_DB=cooperationdb
+    #restart: unless-stopped
+
+  # APP
+  springbootapp:
+    image: alami-cooperation-app:latest
+    container_name: alami-cooperation-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresdb:5432/smsdb
+    ports:
+      - "8089:8090"
+    depends_on:
+      - postgresdb
+volumes:
+  postgres-data:
