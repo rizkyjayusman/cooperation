@@ -19,17 +19,17 @@ I used these tech stack for create this project with:
 
 </div>
 
-g# Build and Run
+# Build and Run
 
 
 ```
 1. Clone the Project
-   $ git clone git@github.com:rizkyjayusman/cygnus.git
-   $ cd cygnus
+   $ git clone git@github.com:rizkyjayusman/cooperation.git
+   $ cd cooperation
 
 2. Build and Package the Project
    $ mvn -e clean package
 
 3. Run the Project
-   $ java -jar /cygnus-project-path/app.jar
+   $ java -jar /cooperation-project-path/app.jar
 ```
