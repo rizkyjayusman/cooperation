@@ -53,6 +53,45 @@ public class SavingControllerTests {
     }
 
     @Test
+    public void createSavingWithoutMemberId_shouldReturnHttp400_givenFailureMemberNotFound() throws Exception {
+        TransactionRequest transactionRequest = new TransactionRequest();
+        transactionRequest.setAmount(new BigDecimal(1000000));
+        transactionRequest.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-01-10"));
+
+        mockMvc.perform(post("/savings")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(transactionRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void createSavingWithoutAmount_shouldReturnHttp400_givenFailureAmountNotFound() throws Exception {
+        TransactionRequest transactionRequest = new TransactionRequest();
+        transactionRequest.setMemberId(1L);
+        transactionRequest.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-01-10"));
+
+        mockMvc.perform(post("/savings")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(transactionRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void createSavingWithoutTransactionDate_shouldReturnHttp400_givenFailureTransactionNotFound() throws Exception {
+        TransactionRequest transactionRequest = new TransactionRequest();
+        transactionRequest.setMemberId(1L);
+        transactionRequest.setAmount(new BigDecimal(1000000));
+
+        mockMvc.perform(post("/savings")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(transactionRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void createDebitTransaction_shouldReturnHttp200_givenValidDebit() throws Exception {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setMemberId(1L);
