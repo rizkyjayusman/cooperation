@@ -13,9 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
-import static com.alami.cooperation.policy.LoanPolicy.isOverLimit;
-import static com.alami.cooperation.policy.LoanPolicy.isOverPay;
+import static com.alami.cooperation.policy.LoanPolicy.*;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -50,11 +50,17 @@ public class LoanServiceImpl implements LoanService {
             loan = new Loan();
             loan.setMemberId(transactionDto.getMemberId());
             loan.setAmount(new BigDecimal(0));
+            loan.setCreatedDate(new Date());
         }
 
+        addLoanAmount(loan, transactionDto);
+        loan.setUpdatedDate(new Date());
+        loanRepository.save(loan);
+    }
+
+    private void addLoanAmount(Loan loan, TransactionDto transactionDto) {
         BigDecimal amount = loan.getAmount().add(transactionDto.getAmount());
         loan.setAmount(amount);
-        loanRepository.save(loan);
     }
 
     @Override
@@ -65,7 +71,7 @@ public class LoanServiceImpl implements LoanService {
             throw new RuntimeException("loan not found");
         }
 
-        if(loan.getAmount().compareTo(new BigDecimal(0)) > 0) {
+        if(isPayable(loan)) {
             throw new RuntimeException("member does not has loan");
         }
 
@@ -76,8 +82,13 @@ public class LoanServiceImpl implements LoanService {
         transactionDto.setTransactionType(TransactionTypeEnum.PAY_LOAN);
         transactionService.createTransaction(transactionDto);
 
+        subtractLoanAmount(loan, transactionDto);
+        loan.setUpdatedDate(new Date());
+        loanRepository.save(loan);
+    }
+
+    private void subtractLoanAmount(Loan loan, TransactionDto transactionDto) {
         BigDecimal amount = loan.getAmount().subtract(transactionDto.getAmount());
         loan.setAmount(amount);
-        loanRepository.save(loan);
     }
 }
