@@ -8,6 +8,8 @@ import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.TransactionRepository;
 import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -23,18 +25,18 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionPublisher transactionPublisher;
 
     @Override
-    public List<Transaction> getTransactionList(TransactionFilter transactionFilter, Pagination pagination) {
+    public Page<Transaction> getTransactionList(Pageable pageable) {
         // TODO find all with filter and paging
-        return transactionRepository.findAll();
+        return transactionRepository.findAll(pageable);
     }
 
     @Override
     public void createTransaction(TransactionDto transactionDto) {
         Transaction transaction = new Transaction();
-        transaction.setMemberId(transaction.getMemberId());
-        transaction.setAmount(transaction.getAmount());
-        transaction.setTransactionType(transaction.getTransactionType());
-        transaction.setTransactionDate(transaction.getTransactionDate());
+        transaction.setMemberId(transactionDto.getMemberId());
+        transaction.setAmount(transactionDto.getAmount());
+        transaction.setTransactionType(transactionDto.getTransactionType());
+        transaction.setTransactionDate(transactionDto.getTransactionDate());
         transaction.setCreatedDate(new Date());
         transactionRepository.save(transaction);
 

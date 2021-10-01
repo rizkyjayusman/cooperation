@@ -7,9 +7,14 @@ import com.alami.cooperation.repository.SavingRepository;
 import com.alami.cooperation.service.SavingService;
 import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
+
+import static com.alami.cooperation.policy.SavingPolicy.isOverLimit;
 
 @Service
 public class SavingServiceImpl implements SavingService {
@@ -21,8 +26,12 @@ public class SavingServiceImpl implements SavingService {
     private SavingRepository savingRepository;
 
     @Override
+    public Page<Saving> getSavingList(Pageable pageable) {
+        return savingRepository.findAll(pageable);
+    }
+
+    @Override
     public void createSavingTransaction(TransactionDto transactionDto) {
-        // TODO create transaction in to main db
         transactionDto.setTransactionType(TransactionTypeEnum.SAVING);
         transactionService.createTransaction(transactionDto);
 
@@ -30,10 +39,14 @@ public class SavingServiceImpl implements SavingService {
         if(saving == null) {
             saving = new Saving();
             saving.setMemberId(transactionDto.getMemberId());
+            saving.setAmount(transactionDto.getAmount());
+            saving.setCreatedDate(new Date());
+            saving.setAmount(new BigDecimal(0));
         }
 
-        // TODO plus the saving amount with the last saving data
-
+        BigDecimal amount = saving.getAmount().add(transactionDto.getAmount());
+        saving.setAmount(amount);
+        saving.setUpdatedDate(new Date());
         savingRepository.save(saving);
     }
 
@@ -41,25 +54,19 @@ public class SavingServiceImpl implements SavingService {
     public void createDebitTransaction(TransactionDto transactionDto) {
         Saving saving = savingRepository.getByMemberId(transactionDto.getMemberId());
         if(saving == null) {
-            // TODO saving not exist
+            throw new RuntimeException("saving was not found");
         }
 
-        // TODO saving should higher than or equal than debit amount
         if(isOverLimit(transactionDto, saving)) {
-            // TODO failed to debit a saving cause overlimit
+            throw new RuntimeException("debit saving over limit");
         }
 
         transactionDto.setTransactionType(TransactionTypeEnum.DEBIT);
         transactionService.createTransaction(transactionDto);
 
-        // TODO subtract the saving amount with the last saving data
-
+        BigDecimal amount = saving.getAmount().subtract(transactionDto.getAmount());
+        saving.setAmount(amount);
         savingRepository.save(saving);
-    }
-
-
-    private boolean isOverLimit(TransactionDto transactionDto, Saving saving) {
-        return saving.getAmount().compareTo(transactionDto.getAmount()) < 0;
     }
 
     @Override
