@@ -9,7 +9,7 @@ public interface LoanService {
 
     TransactionDto createLoanTransaction(TransactionDto transactionDto);
 
-    void createPayLoanTransaction(TransactionDto transactionDto);
+    TransactionDto createPayLoanTransaction(TransactionDto transactionDto);
 
     Page<Loan> getLoanList(Pageable pageable);
 }

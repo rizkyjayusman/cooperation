@@ -52,5 +52,27 @@ public class LoanControllerTests {
         verify(loanService, times(1)).createLoanTransaction(refEq(transactionDto));
     }
 
+    @Test
+    public void createPayLoanTransaction_shouldReturnHttp200_givenValidPayLoan() throws Exception {
+        TransactionDto transactionDto = new TransactionDto();
+        transactionDto.setMemberId(1L);
+        transactionDto.setAmount(new BigDecimal(1000000));
+        transactionDto.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-01-10"));
+        given(loanService.createPayLoanTransaction(transactionDto)).willReturn(transactionDto);
+
+        TransactionRequest transactionRequest = new TransactionRequest();
+        transactionRequest.setMemberId(1L);
+        transactionRequest.setAmount(new BigDecimal(1000000));
+        transactionRequest.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-01-10"));
+
+        mockMvc.perform(post("/loans/pay")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(transactionRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(loanService, times(1)).createPayLoanTransaction(refEq(transactionDto));
+    }
+
 
 }

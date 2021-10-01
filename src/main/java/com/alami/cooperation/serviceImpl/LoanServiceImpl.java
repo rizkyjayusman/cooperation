@@ -72,7 +72,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void createPayLoanTransaction(TransactionDto transactionDto) {
+    public TransactionDto createPayLoanTransaction(TransactionDto transactionDto) {
         Loan loan = loanRepository.getByMemberId(transactionDto.getMemberId());
 
         validatePayLoan(transactionDto, loan);
@@ -83,6 +83,7 @@ public class LoanServiceImpl implements LoanService {
         subtractLoanAmount(loan, transactionDto);
         loan.setUpdatedDate(new Date());
         loanRepository.save(loan);
+        return transactionDto;
     }
 
     private void validatePayLoan(TransactionDto transactionDto, Loan loan) {
