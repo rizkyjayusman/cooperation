@@ -35,7 +35,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void createLoanTransaction(TransactionDto transactionDto) {
+    public TransactionDto createLoanTransaction(TransactionDto transactionDto) {
         BigDecimal diffSaving = getDiffSaving(loanRepository.getTotalLoan(), savingService.getTotalSaving());
         validateLoan(transactionDto, diffSaving);
 
@@ -53,6 +53,7 @@ public class LoanServiceImpl implements LoanService {
         addLoanAmount(loan, transactionDto);
         loan.setUpdatedDate(new Date());
         loanRepository.save(loan);
+        return transactionDto;
     }
 
     private BigDecimal getDiffSaving(BigDecimal totalSaving, BigDecimal totalLoan) {

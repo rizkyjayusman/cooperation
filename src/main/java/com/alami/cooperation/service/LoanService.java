@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface LoanService {
 
-    void createLoanTransaction(TransactionDto transactionDto);
+    TransactionDto createLoanTransaction(TransactionDto transactionDto);
 
     void createPayLoanTransaction(TransactionDto transactionDto);
 
