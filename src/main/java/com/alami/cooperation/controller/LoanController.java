@@ -33,7 +33,7 @@ public class LoanController {
     }
 
     @PostMapping("/pay")
-    public void createPayLoanTransaction(@RequestBody TransactionRequest transactionRequest) {
+    public void createPayLoanTransaction(@Validated @RequestBody TransactionRequest transactionRequest) {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setAmount(transactionRequest.getAmount());
         transactionDto.setTransactionDate(transactionRequest.getTransactionDate());
