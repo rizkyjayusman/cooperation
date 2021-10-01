@@ -31,7 +31,7 @@ public class SavingServiceImpl implements SavingService {
     }
 
     @Override
-    public void createSavingTransaction(TransactionDto transactionDto) {
+    public TransactionDto createSavingTransaction(TransactionDto transactionDto) {
         transactionDto.setTransactionType(TransactionTypeEnum.SAVING);
         transactionService.createTransaction(transactionDto);
 
@@ -48,6 +48,7 @@ public class SavingServiceImpl implements SavingService {
         saving.setAmount(amount);
         saving.setUpdatedDate(new Date());
         savingRepository.save(saving);
+        return transactionDto;
     }
 
     @Override

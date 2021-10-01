@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 public interface SavingService {
 
-    void createSavingTransaction(TransactionDto transactionDto);
+    TransactionDto createSavingTransaction(TransactionDto transactionDto);
 
     void createDebitTransaction(TransactionDto transactionDto);
 
