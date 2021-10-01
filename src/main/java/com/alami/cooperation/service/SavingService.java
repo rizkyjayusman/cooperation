@@ -11,7 +11,7 @@ public interface SavingService {
 
     TransactionDto createSavingTransaction(TransactionDto transactionDto);
 
-    void createDebitTransaction(TransactionDto transactionDto);
+    TransactionDto createDebitTransaction(TransactionDto transactionDto);
 
     BigDecimal getTotalSaving();
 

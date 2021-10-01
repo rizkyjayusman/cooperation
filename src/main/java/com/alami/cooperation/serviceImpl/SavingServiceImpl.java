@@ -52,7 +52,7 @@ public class SavingServiceImpl implements SavingService {
     }
 
     @Override
-    public void createDebitTransaction(TransactionDto transactionDto) {
+    public TransactionDto createDebitTransaction(TransactionDto transactionDto) {
         Saving saving = savingRepository.getByMemberId(transactionDto.getMemberId());
         if(saving == null) {
             throw new RuntimeException("saving was not found");
@@ -68,6 +68,7 @@ public class SavingServiceImpl implements SavingService {
         BigDecimal amount = saving.getAmount().subtract(transactionDto.getAmount());
         saving.setAmount(amount);
         savingRepository.save(saving);
+        return transactionDto;
     }
 
     @Override

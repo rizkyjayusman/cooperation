@@ -52,4 +52,26 @@ public class SavingControllerTests {
         verify(savingService, times(1)).createSavingTransaction(refEq(transactionDto));
     }
 
+    @Test
+    public void createDebitTransaction_shouldReturnHttp200_givenValidDebit() throws Exception {
+        TransactionDto transactionDto = new TransactionDto();
+        transactionDto.setMemberId(1L);
+        transactionDto.setAmount(new BigDecimal(1000000));
+        transactionDto.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-01-10"));
+        given(savingService.createDebitTransaction(transactionDto)).willReturn(transactionDto);
+
+        TransactionRequest transactionRequest = new TransactionRequest();
+        transactionRequest.setMemberId(1L);
+        transactionRequest.setAmount(new BigDecimal(1000000));
+        transactionRequest.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-01-10"));
+
+        mockMvc.perform(post("/savings/debit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(transactionRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(savingService, times(1)).createDebitTransaction(refEq(transactionDto));
+    }
+
 }
