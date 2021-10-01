@@ -1,22 +1,45 @@
 package com.alami.cooperation.controller;
 
 import com.alami.cooperation.controller.request.TransactionRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.alami.cooperation.dto.TransactionDto;
+import com.alami.cooperation.entity.Loan;
+import com.alami.cooperation.service.LoanService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("loans")
 public class LoanController {
 
-    // create loan transaction
-    @PostMapping
-    public void createLoanTransaction(@RequestBody TransactionRequest transactionRequest) {}
+    @Autowired
+    private LoanService loanService;
 
-    // create pay the loan transaction
-    @PostMapping("pay")
-    public void createPayLoanTransaction(@RequestBody TransactionRequest transactionRequest) {}
+    @GetMapping
+    public Page<Loan> getSavingList(Pageable pageable) {
+        return loanService.getLoanList(pageable);
+    }
+
+
+    @PostMapping
+    public void createLoanTransaction(@Validated @RequestBody TransactionRequest transactionRequest) {
+        TransactionDto transactionDto = new TransactionDto();
+        transactionDto.setAmount(transactionRequest.getAmount());
+        transactionDto.setTransactionDate(transactionRequest.getTransactionDate());
+        transactionDto.setMemberId(transactionRequest.getMemberId());
+        loanService.createLoanTransaction(transactionDto);
+    }
+
+    @PostMapping("/pay")
+    public void createPayLoanTransaction(@RequestBody TransactionRequest transactionRequest) {
+        TransactionDto transactionDto = new TransactionDto();
+        transactionDto.setAmount(transactionRequest.getAmount());
+        transactionDto.setTransactionDate(transactionRequest.getTransactionDate());
+        transactionDto.setMemberId(transactionRequest.getMemberId());
+        loanService.createPayLoanTransaction(transactionDto);
+    }
 
 
 }

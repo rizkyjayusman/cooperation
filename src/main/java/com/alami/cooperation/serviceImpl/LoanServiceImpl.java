@@ -8,9 +8,14 @@ import com.alami.cooperation.service.LoanService;
 import com.alami.cooperation.service.SavingService;
 import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+
+import static com.alami.cooperation.policy.LoanPolicy.isOverLimit;
+import static com.alami.cooperation.policy.LoanPolicy.isOverPay;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -25,10 +30,16 @@ public class LoanServiceImpl implements LoanService {
     private LoanRepository loanRepository;
 
     @Override
+    public Page<Loan> getLoanList(Pageable pageable) {
+        return loanRepository.findAll(pageable);
+    }
+
+    @Override
     public void createLoanTransaction(TransactionDto transactionDto) {
-        // TODO total savings should higher than or equal than loan amount
-        if(isOverLimit(transactionDto)) {
-            // TODO failed to loan a cash cause overlimit
+        BigDecimal totalLoan = loanRepository.getTotalLoan();
+        BigDecimal totalSaving = savingService.getTotalSaving().subtract(totalLoan);
+        if(isOverLimit(transactionDto, totalSaving)) {
+            throw new RuntimeException("loan was over limit");
         }
 
         transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
@@ -41,14 +52,9 @@ public class LoanServiceImpl implements LoanService {
             loan.setAmount(new BigDecimal(0));
         }
 
-        // TODO plus the loan amount with the last loan data
-
+        BigDecimal amount = loan.getAmount().add(transactionDto.getAmount());
+        loan.setAmount(amount);
         loanRepository.save(loan);
-    }
-
-    private boolean isOverLimit(TransactionDto transactionDto) {
-        BigDecimal totalSaving = savingService.getTotalSaving();
-        return totalSaving.compareTo(transactionDto.getAmount()) < 0;
     }
 
     @Override
@@ -56,21 +62,22 @@ public class LoanServiceImpl implements LoanService {
         // TODO total pay loan should lower than or equal than loan amount
         Loan loan = loanRepository.getByMemberId(transactionDto.getMemberId());
         if(loan == null) {
-            // TODO loan does not exist
+            throw new RuntimeException("loan not found");
         }
 
-        assert loan != null;
+        if(loan.getAmount().compareTo(new BigDecimal(0)) > 0) {
+            throw new RuntimeException("member does not has loan");
+        }
+
         if(isOverPay(transactionDto, loan)) {
-            // TODO pay loan amount greater than the loan amount
+            throw new RuntimeException("pay loan amount is over pay");
         }
 
         transactionDto.setTransactionType(TransactionTypeEnum.PAY_LOAN);
         transactionService.createTransaction(transactionDto);
 
-        // TODO subtract the loan amount with the last loan data
-    }
-
-    private boolean isOverPay(TransactionDto transactionDto, Loan loan) {
-        return transactionDto.getAmount().compareTo(loan.getAmount()) > 0;
+        BigDecimal amount = loan.getAmount().subtract(transactionDto.getAmount());
+        loan.setAmount(amount);
+        loanRepository.save(loan);
     }
 }

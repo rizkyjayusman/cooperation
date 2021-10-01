@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 public interface SavingRepository extends JpaRepository<Saving, Long> {
 
-    @Query("select count(s.amount) as total_saving from savings s")
+    @Query("select sum(s.amount) as total_saving from savings s")
     BigDecimal getTotalSaving();
 
     Saving getByMemberId(Long memberId);
