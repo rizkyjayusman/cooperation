@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("members")
 public class MemberController {
 
-    @Autowired
-    private MemberService memberService;
+    private final MemberService memberService;
+
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     @GetMapping
     public Page<Member> getMemberList(Pageable pageable) {
@@ -23,13 +26,13 @@ public class MemberController {
     }
 
     @PostMapping
-    public void createMember(@Validated @RequestBody MemberRequest memberRequest) {
+    public MemberDto createMember(@Validated @RequestBody MemberRequest memberRequest) {
         MemberDto memberDto = new MemberDto();
         memberDto.setFirstName(memberRequest.getFirstName());
         memberDto.setLastName(memberRequest.getLastName());
         memberDto.setBirthDate(memberRequest.getBirthDate());
         memberDto.setAddress(memberRequest.getAddress());
-        memberService.createMember(memberDto);
+        return memberService.createMember(memberDto);
     }
 
 }

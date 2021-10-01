@@ -21,12 +21,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void createMember(MemberDto memberDto) {
+    public MemberDto createMember(MemberDto memberDto) {
         Member member = new Member();
         member.setFirstName(memberDto.getFirstName());
         member.setLastName(memberDto.getFirstName());
         member.setBirthDate(memberDto.getBirthDate());
         member.setAddress(memberDto.getAddress());
         memberRepository.save(member);
+        return memberDto;
     }
 }

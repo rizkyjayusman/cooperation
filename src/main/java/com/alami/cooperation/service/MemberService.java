@@ -9,5 +9,5 @@ public interface MemberService {
 
     Page<Member> getMemberList(Pageable pageable);
 
-    void createMember(MemberDto memberDto);
+    MemberDto createMember(MemberDto memberDto);
 }
