@@ -12,5 +12,5 @@ RUN mkdir -p /app/logs/
 
 # Step : Package image
 FROM openjdk:8-jre-alpine
-COPY --from=target /build/target/com.alami.cooperation-1.0.0.jar /app/my-app.jar
+COPY --from=target /build/target/cooperation-1.0.0.jar /app/my-app.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=docker", "-jar", "/app/my-app.jar"]
