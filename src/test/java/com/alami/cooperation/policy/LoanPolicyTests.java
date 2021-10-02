@@ -60,7 +60,7 @@ public class LoanPolicyTests {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setMemberId(1L);
         transactionDto.setAmount(new BigDecimal(1000000));
-        transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
+        transactionDto.setTransactionType(TransactionTypeEnum.PAY_LOAN);
         transactionDto.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-08-17"));
 
         Loan loan = new Loan();
@@ -78,7 +78,7 @@ public class LoanPolicyTests {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setMemberId(1L);
         transactionDto.setAmount(new BigDecimal(1000000));
-        transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
+        transactionDto.setTransactionType(TransactionTypeEnum.PAY_LOAN);
         transactionDto.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-08-17"));
 
         Loan loan = new Loan();
@@ -96,7 +96,7 @@ public class LoanPolicyTests {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setMemberId(1L);
         transactionDto.setAmount(new BigDecimal(500000));
-        transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
+        transactionDto.setTransactionType(TransactionTypeEnum.PAY_LOAN);
         transactionDto.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-08-17"));
 
         Loan loan = new Loan();
