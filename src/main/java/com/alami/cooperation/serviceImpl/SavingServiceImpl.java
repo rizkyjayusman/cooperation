@@ -22,8 +22,11 @@ public class SavingServiceImpl implements SavingService {
     @Autowired
     private TransactionService transactionService;
 
-    @Autowired
-    private SavingRepository savingRepository;
+    private final SavingRepository savingRepository;
+
+    public SavingServiceImpl(SavingRepository savingRepository) {
+        this.savingRepository = savingRepository;
+    }
 
     @Override
     public Page<Saving> getSavingList(Pageable pageable) {
@@ -44,11 +47,15 @@ public class SavingServiceImpl implements SavingService {
             saving.setAmount(new BigDecimal(0));
         }
 
-        BigDecimal amount = saving.getAmount().add(transactionDto.getAmount());
-        saving.setAmount(amount);
+        addSavingAmount(saving, transactionDto);
         saving.setUpdatedDate(new Date());
         savingRepository.save(saving);
         return transactionDto;
+    }
+
+    public void addSavingAmount(Saving saving, TransactionDto transactionDto) {
+        BigDecimal amount = saving.getAmount().add(transactionDto.getAmount());
+        saving.setAmount(amount);
     }
 
     @Override
@@ -65,10 +72,15 @@ public class SavingServiceImpl implements SavingService {
         transactionDto.setTransactionType(TransactionTypeEnum.DEBIT);
         transactionService.createTransaction(transactionDto);
 
-        BigDecimal amount = saving.getAmount().subtract(transactionDto.getAmount());
-        saving.setAmount(amount);
+        subtractSavingAmount(saving, transactionDto);
+
         savingRepository.save(saving);
         return transactionDto;
+    }
+
+    public void subtractSavingAmount(Saving saving, TransactionDto transactionDto) {
+        BigDecimal amount = saving.getAmount().subtract(transactionDto.getAmount());
+        saving.setAmount(amount);
     }
 
     @Override
