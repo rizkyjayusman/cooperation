@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberServiceImpl implements MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     @Override
     public Page<Member> getMemberList(Pageable pageable) {
@@ -24,7 +27,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberDto createMember(MemberDto memberDto) {
         Member member = new Member();
         member.setFirstName(memberDto.getFirstName());
-        member.setLastName(memberDto.getFirstName());
+        member.setLastName(memberDto.getLastName());
         member.setBirthDate(memberDto.getBirthDate());
         member.setAddress(memberDto.getAddress());
         memberRepository.save(member);
