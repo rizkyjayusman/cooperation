@@ -2,33 +2,28 @@ package com.alami.cooperation.controller;
 
 import com.alami.cooperation.controller.request.TransactionRequest;
 import com.alami.cooperation.dto.TransactionDto;
-import com.alami.cooperation.entity.Loan;
-import com.alami.cooperation.service.LoanService;
+import com.alami.cooperation.service.RepaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("loans")
-public class LoanController {
+@RequestMapping("repayments")
+public class RepaymentController {
 
     @Autowired
-    private LoanService loanService;
-
-    @GetMapping
-    public Page<Loan> getLoanList(Pageable pageable) {
-        return loanService.getLoanList(pageable);
-    }
-
+    private RepaymentService repaymentService;
 
     @PostMapping
-    public void createLoanTransaction(@Validated @RequestBody TransactionRequest transactionRequest) {
+    public void createRepaymentTransaction(@Validated @RequestBody TransactionRequest transactionRequest) {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setAmount(transactionRequest.getAmount());
         transactionDto.setTransactionDate(transactionRequest.getTransactionDate());
         transactionDto.setMemberId(transactionRequest.getMemberId());
-        loanService.createLoanTransaction(transactionDto);
+        repaymentService.createRepaymentTransaction(transactionDto);
     }
+
 }

@@ -35,6 +35,17 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    public Loan getByMemberId(Long memberId) {
+        return loanRepository.getByMemberId(memberId);
+    }
+
+    @Override
+    public Loan saveLoan(Loan loan) {
+        loan.setUpdatedDate(new Date());
+        return loanRepository.save(loan);
+    }
+
+    @Override
     public TransactionDto createLoanTransaction(TransactionDto transactionDto) {
         BigDecimal diffSaving = getDiffSaving(loanRepository.getTotalLoan(), savingService.getTotalSaving());
         validateLoan(transactionDto, diffSaving);
@@ -71,37 +82,7 @@ public class LoanServiceImpl implements LoanService {
         loan.setAmount(amount);
     }
 
-    @Override
-    public TransactionDto createPayLoanTransaction(TransactionDto transactionDto) {
-        Loan loan = loanRepository.getByMemberId(transactionDto.getMemberId());
-
-        validatePayLoan(transactionDto, loan);
-
-        transactionDto.setTransactionType(TransactionTypeEnum.PAY_LOAN);
-        transactionService.createTransaction(transactionDto);
-
-        subtractLoanAmount(loan, transactionDto);
-        loan.setUpdatedDate(new Date());
-        loanRepository.save(loan);
-        return transactionDto;
-    }
-
-    private void validatePayLoan(TransactionDto transactionDto, Loan loan) {
-        if(loan == null) {
-            throw new RuntimeException("loan not found");
-        }
-
-        if(! isPayable(loan)) {
-            throw new RuntimeException("member does not has loan");
-        }
-
-        if(isOverPay(transactionDto, loan)) {
-            throw new RuntimeException("pay loan amount is over pay");
-        }
-
-    }
-
-    private void subtractLoanAmount(Loan loan, TransactionDto transactionDto) {
+    public void subtractLoanAmount(Loan loan, TransactionDto transactionDto) {
         BigDecimal amount = loan.getAmount().subtract(transactionDto.getAmount());
         loan.setAmount(amount);
     }
