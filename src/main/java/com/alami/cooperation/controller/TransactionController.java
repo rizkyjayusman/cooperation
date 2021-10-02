@@ -16,7 +16,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping
-    public Page<Transaction> getTransactionList(@RequestBody TransactionFilter transactionFilter, Pageable pageable) {
+    public Page<Transaction> getTransactionList(Pageable pageable) {
         // TODO get transaction list with pagination and filtered by created_date range
         // TODO get transaction list with pagination and filtered by member id
         return transactionService.getTransactionList(pageable);
