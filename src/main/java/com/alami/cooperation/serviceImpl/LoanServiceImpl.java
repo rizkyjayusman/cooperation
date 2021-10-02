@@ -91,7 +91,7 @@ public class LoanServiceImpl implements LoanService {
             throw new RuntimeException("loan not found");
         }
 
-        if(isPayable(loan)) {
+        if(! isPayable(loan)) {
             throw new RuntimeException("member does not has loan");
         }
 

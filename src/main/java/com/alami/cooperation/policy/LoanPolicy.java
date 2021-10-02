@@ -16,6 +16,6 @@ public class LoanPolicy {
     }
 
     public static boolean isPayable(Loan loan) {
-        return loan.getAmount().compareTo(new BigDecimal(0)) <= 0;
+        return loan.getAmount().compareTo(new BigDecimal(0)) > 0;
     }
 }
