@@ -2,21 +2,29 @@ package com.alami.cooperation.controller;
 
 import com.alami.cooperation.controller.request.TransactionRequest;
 import com.alami.cooperation.dto.TransactionDto;
+import com.alami.cooperation.entity.Loan;
 import com.alami.cooperation.service.LoanService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.alami.cooperation.util.ResponseUtil.toJson;
 import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,6 +36,43 @@ public class LoanControllerTests {
 
     @MockBean
     private LoanService loanService;
+
+    private Loan createLoanWawan() throws ParseException {
+        Loan loan = new Loan();
+        loan.setId(1L);
+        loan.setMemberId(1L);
+        loan.setAmount(new BigDecimal(1000000));
+        loan.setCreatedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-10-01"));
+        loan.setUpdatedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-10-01"));
+
+        return loan;
+    }
+
+    private Loan createLoanJoko() throws ParseException {
+        Loan loan = new Loan();
+        loan.setId(2L);
+        loan.setMemberId(2L);
+        loan.setAmount(new BigDecimal(1000000));
+        loan.setCreatedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-10-02"));
+        loan.setUpdatedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-10-02"));
+
+        return loan;
+    }
+
+    @Test
+    public void getLoanList_shouldReturnHttp200_givenValidLoanList() throws Exception {
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Loan[] loan = new Loan[] {createLoanWawan(), createLoanJoko()};
+        List<Loan> loanList = Arrays.asList(loan);
+        Page<Loan> loanPage = new PageImpl<Loan>(loanList, pageRequest, loanList.size());
+
+        mockMvc.perform(get("/loans?page=0&size=10")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(loanService, times(1)).getLoanList(pageRequest);
+    }
 
     @Test
     public void createLoan_shouldReturnHttp200_givenValidLoan() throws Exception {

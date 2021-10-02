@@ -18,7 +18,7 @@ public class LoanController {
     private LoanService loanService;
 
     @GetMapping
-    public Page<Loan> getSavingList(Pageable pageable) {
+    public Page<Loan> getLoanList(Pageable pageable) {
         return loanService.getLoanList(pageable);
     }
 
