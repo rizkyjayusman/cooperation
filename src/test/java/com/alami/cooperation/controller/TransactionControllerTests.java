@@ -35,7 +35,7 @@ public class TransactionControllerTests {
 
     private Transaction createDepositTransactionWawan() throws ParseException {
         Transaction transaction = new Transaction();
-        transaction.setId(1L);
+//        transaction.setId(1L);
         transaction.setMemberId(1L);
         transaction.setAmount(new BigDecimal(1000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-08-17"));
@@ -46,7 +46,7 @@ public class TransactionControllerTests {
 
     private Transaction createDepositTransactionTeguh() throws ParseException {
         Transaction transaction = new Transaction();
-        transaction.setId(2L);
+//        transaction.setId(2L);
         transaction.setMemberId(2L);
         transaction.setAmount(new BigDecimal(5000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-08-18"));
@@ -57,7 +57,7 @@ public class TransactionControllerTests {
 
     private Transaction createLoanTransactionJoko() throws ParseException {
         Transaction transaction = new Transaction();
-        transaction.setId(3L);
+//        transaction.setId(3L);
         transaction.setMemberId(3L);
         transaction.setAmount(new BigDecimal(2000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-09-30"));
@@ -68,7 +68,7 @@ public class TransactionControllerTests {
 
     private Transaction createRepaymentTransactionJoko() throws ParseException {
         Transaction transaction = new Transaction();
-        transaction.setId(4L);
+//        transaction.setId(4L);
         transaction.setMemberId(3L);
         transaction.setAmount(new BigDecimal(1000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-11-10"));
@@ -79,7 +79,7 @@ public class TransactionControllerTests {
 
     private Transaction createDepositTransactionWawanTwo() throws ParseException {
         Transaction transaction = new Transaction();
-        transaction.setId(5L);
+//        transaction.setId(5L);
         transaction.setMemberId(1L);
         transaction.setAmount(new BigDecimal(5000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-12-01"));
@@ -90,7 +90,7 @@ public class TransactionControllerTests {
 
     private Transaction createWithdrawalTransactionTeguh() throws ParseException {
         Transaction transaction = new Transaction();
-        transaction.setId(6L);
+//        transaction.setId(6L);
         transaction.setMemberId(2L);
         transaction.setAmount(new BigDecimal(2000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-12-01"));

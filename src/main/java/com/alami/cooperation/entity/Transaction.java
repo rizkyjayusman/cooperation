@@ -13,7 +13,7 @@ import java.util.Date;
 public class Transaction {
 
     @Id
-    private Long id;
+    private String id;
 
     private Long memberId;
 

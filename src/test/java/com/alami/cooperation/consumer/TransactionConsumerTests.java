@@ -39,7 +39,7 @@ public class TransactionConsumerTests {
         transactionDto.setTransactionDate(new Date());
 
         Transaction transaction = new Transaction();
-        transaction.setId(1L);
+//        transaction.setId(1L);
         transaction.setMemberId(1L);
         transaction.setAmount(new BigDecimal(1000000));
         transaction.setTransactionType(TransactionTypeEnum.DEPOSIT);
