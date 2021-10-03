@@ -23,8 +23,34 @@ I used these tech stack for create this project with:
 
 I create an API Documentation using Swagger 2. you can look it on : http://localhost:8090/swagger-ui/
 
-# Build and Run
 
+# Implemented Features
+
+This tables shows which features that has been implemented by this repository.
+
+:white_check_mark: : ready
+
+:heavy_exclamation_mark: : in progress
+
+:x: : not yet supported natively by payment gateway
+
+| Features                        | Midtrans (Snap)                     |
+| ------------------------------- | ----------------------------------- |
+| Get All Members                 | :white_check_mark:                  |
+| Add New Member                  | :white_check_mark:                  |
+| Get All Transaction History     | :white_check_mark:                  |
+| Create Transaction History      | :white_check_mark:                  |
+| Get All Member's Deposit        | :white_check_mark:                  |
+| Create Deposit                  | :white_check_mark:                  |
+| Create Withdrawal               | :white_check_mark:                  |
+| Get All Member's Loan           | :white_check_mark:                  |
+| Create Loan                     | :white_check_mark:                  |
+| Create Repayment                | :white_check_mark:                  |
+| Unit Test                       | :heavy_exclamation_mark:            |
+| Api Documentation with Swagger  | :white_check_mark:                  |
+
+
+# Build and Run
 
 ```
 1. Clone the Project
