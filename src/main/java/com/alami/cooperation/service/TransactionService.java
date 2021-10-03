@@ -1,5 +1,6 @@
 package com.alami.cooperation.service;
 
+import com.alami.cooperation.controller.filter.TransactionFilter;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Transaction;
 import org.springframework.data.domain.Page;
@@ -11,4 +12,5 @@ public interface TransactionService {
 
     Transaction createTransaction(TransactionDto transactionDto);
 
+    Page<Transaction> getTransactionList(TransactionFilter transactionFilter, Pageable pageable);
 }

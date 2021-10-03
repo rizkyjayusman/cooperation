@@ -1,5 +1,6 @@
 package com.alami.cooperation.serviceImpl;
 
+import com.alami.cooperation.controller.filter.TransactionFilter;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Transaction;
 import com.alami.cooperation.repository.TransactionRepository;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -32,6 +34,24 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setTransactionDate(transactionDto.getTransactionDate());
         transaction.setCreatedDate(new Date());
         return transactionRepository.save(transaction);
+    }
+
+    @Override
+    public Page<Transaction> getTransactionList(TransactionFilter transactionFilter, Pageable pageable) {
+        if(transactionFilter.getMemberId() != null) {
+            return transactionRepository.findByMemberId(transactionFilter.getMemberId(), pageable);
+        }
+//
+        if(transactionFilter.getFromDate() == null) {
+            transactionFilter.setFromDate(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3)));
+        }
+
+        if(transactionFilter.getEndDate() == null) {
+            transactionFilter.setFromDate(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)));
+        }
+
+//        return transactionRepository.findAll(pageable);
+        return transactionRepository.findAByTransactionDateBetween(transactionFilter.getFromDate(), transactionFilter.getEndDate(), pageable);
     }
 
 }
