@@ -3,6 +3,7 @@ package com.alami.cooperation.controller;
 import com.alami.cooperation.controller.request.TransactionRequest;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Deposit;
+import com.alami.cooperation.exception.BaseException;
 import com.alami.cooperation.service.DepositService;
 import com.alami.cooperation.vo.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.alami.cooperation.util.ResponseHandler.success;
+import static com.alami.cooperation.handler.ResponseHandler.success;
 
 @RestController
 @RequestMapping("deposits")
@@ -30,7 +31,7 @@ public class DepositController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createDepositTransaction(@Validated @RequestBody TransactionRequest transactionRequest) {
+    public ResponseEntity<Object> createDepositTransaction(@Validated @RequestBody TransactionRequest transactionRequest) throws BaseException {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setAmount(transactionRequest.getAmount());
         transactionDto.setTransactionDate(transactionRequest.getTransactionDate());

@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.alami.cooperation.util.ResponseHandler.success;
+import static com.alami.cooperation.handler.ResponseHandler.success;
 
 @RestController
 @RequestMapping("members")

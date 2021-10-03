@@ -4,6 +4,7 @@ import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Deposit;
 import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
+import com.alami.cooperation.exception.BaseException;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.DepositRepository;
 import com.alami.cooperation.service.DepositService;
@@ -32,13 +33,13 @@ public class DepositServiceImpl implements DepositService {
     }
 
     @Override
-    public TransactionDto createDepositTransaction(TransactionDto transactionDto) {
+    public TransactionDto createDepositTransaction(TransactionDto transactionDto) throws BaseException {
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
         transactionPublisher.publish(transactionDto);
 
         Member member = memberService.getMemberById(transactionDto.getMemberId());
         if(member == null) {
-            throw new RuntimeException("member not found");
+            throw new BaseException("member not found");
         }
 
         Deposit deposit = depositRepository.getByMemberId(transactionDto.getMemberId());

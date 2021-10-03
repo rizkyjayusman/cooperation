@@ -4,6 +4,7 @@ import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Loan;
 import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
+import com.alami.cooperation.exception.BaseException;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.LoanRepository;
 import com.alami.cooperation.service.DepositService;
@@ -51,10 +52,10 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public TransactionDto createLoanTransaction(TransactionDto transactionDto) {
+    public TransactionDto createLoanTransaction(TransactionDto transactionDto) throws BaseException {
         Member member = memberService.getMemberById(transactionDto.getMemberId());
         if(member == null) {
-            throw new RuntimeException("member not found");
+            throw new BaseException("member not found");
         }
 
         BigDecimal diffBalance = getDiffBalance(depositService.getTotalDeposit(), getTotalLoan());
@@ -90,9 +91,9 @@ public class LoanServiceImpl implements LoanService {
         return totalDeposit.subtract(totalLoan);
     }
 
-    private void validateLoan(TransactionDto transactionDto, BigDecimal totalDeposit) {
+    private void validateLoan(TransactionDto transactionDto, BigDecimal totalDeposit) throws BaseException {
         if(isOverLimit(transactionDto, totalDeposit)) {
-            throw new RuntimeException("loan was over limit");
+            throw new BaseException("loan was over limit");
         }
     }
 

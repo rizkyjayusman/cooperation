@@ -4,6 +4,7 @@ import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Loan;
 import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
+import com.alami.cooperation.exception.BaseException;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.service.LoanService;
 import com.alami.cooperation.service.MemberService;
@@ -27,10 +28,10 @@ public class RepaymentServiceImpl implements RepaymentService {
     private TransactionPublisher transactionPublisher;
 
     @Override
-    public TransactionDto createRepaymentTransaction(TransactionDto transactionDto) {
+    public TransactionDto createRepaymentTransaction(TransactionDto transactionDto) throws BaseException {
         Member member = memberService.getMemberById(transactionDto.getMemberId());
         if(member == null) {
-            throw new RuntimeException("member not found");
+            throw new BaseException("member not found");
         }
 
         Loan loan = loanService.getByMemberId(transactionDto.getMemberId());
@@ -45,17 +46,17 @@ public class RepaymentServiceImpl implements RepaymentService {
         return transactionDto;
     }
 
-    private void validateRepayment(TransactionDto transactionDto, Loan loan) {
+    private void validateRepayment(TransactionDto transactionDto, Loan loan) throws BaseException {
         if(loan == null) {
-            throw new RuntimeException("loan not found");
+            throw new BaseException("loan not found");
         }
 
         if(! isPayable(loan)) {
-            throw new RuntimeException("member does not has loan");
+            throw new BaseException("member does not has loan");
         }
 
         if(isOverPay(transactionDto, loan)) {
-            throw new RuntimeException("repayment amount is over pay");
+            throw new BaseException("repayment amount is over pay");
         }
 
     }

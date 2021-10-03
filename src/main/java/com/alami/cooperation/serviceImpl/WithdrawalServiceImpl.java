@@ -4,6 +4,7 @@ import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Deposit;
 import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
+import com.alami.cooperation.exception.BaseException;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.service.DepositService;
 import com.alami.cooperation.service.MemberService;
@@ -32,19 +33,19 @@ public class WithdrawalServiceImpl implements WithdrawalService {
 
 
     @Override
-    public TransactionDto createWithdrawalTransaction(TransactionDto transactionDto) {
+    public TransactionDto createWithdrawalTransaction(TransactionDto transactionDto) throws BaseException {
         Member member = memberService.getMemberById(transactionDto.getMemberId());
         if(member == null) {
-            throw new RuntimeException("member not found");
+            throw new BaseException("member not found");
         }
 
         Deposit deposit = depositService.getByMemberId(transactionDto.getMemberId());
         if(deposit == null) {
-            throw new RuntimeException("deposit was not found");
+            throw new BaseException("deposit was not found");
         }
 
         if(isOverLimit(transactionDto, deposit)) {
-            throw new RuntimeException("withdrawal deposit over limit");
+            throw new BaseException("withdrawal deposit over limit");
         }
 
         transactionDto.setTransactionType(TransactionTypeEnum.WITHDRAWAL);
