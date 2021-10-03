@@ -27,7 +27,7 @@ public class RepaymentServiceImpl implements RepaymentService {
 
         validateRepayment(transactionDto, loan);
 
-        transactionDto.setTransactionType(TransactionTypeEnum.PAY_LOAN);
+        transactionDto.setTransactionType(TransactionTypeEnum.REPAYMENT);
         transactionService.createTransaction(transactionDto);
 
         loanService.subtractLoanAmount(loan, transactionDto);

@@ -66,13 +66,13 @@ public class TransactionControllerTests {
         return transaction;
     }
 
-    private Transaction createPayLoanTransactionJoko() throws ParseException {
+    private Transaction createRepaymentTransactionJoko() throws ParseException {
         Transaction transaction = new Transaction();
         transaction.setId(4L);
         transaction.setMemberId(3L);
         transaction.setAmount(new BigDecimal(1000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-11-10"));
-        transaction.setTransactionType(TransactionTypeEnum.PAY_LOAN);
+        transaction.setTransactionType(TransactionTypeEnum.REPAYMENT);
 
         return transaction;
     }
@@ -106,7 +106,7 @@ public class TransactionControllerTests {
                 createDepositTransactionWawan(),
                 createDepositTransactionTeguh(),
                 createLoanTransactionJoko(),
-                createPayLoanTransactionJoko(),
+                createRepaymentTransactionJoko(),
                 createDepositTransactionWawanTwo(),
                 createWithdrawalTransactionTeguh()
         };

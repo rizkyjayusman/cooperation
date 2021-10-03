@@ -31,7 +31,7 @@ public class RepaymentControllerTests {
     private RepaymentService repaymentService;
 
     @Test
-    public void createPayLoanTransaction_shouldReturnHttp200_givenValidPayLoan() throws Exception {
+    public void createRepaymentTransaction_shouldReturnHttp200_givenValidRepayment() throws Exception {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setMemberId(1L);
         transactionDto.setAmount(new BigDecimal(1000000));
