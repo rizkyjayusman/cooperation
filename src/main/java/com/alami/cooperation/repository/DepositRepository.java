@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Repository
 public interface DepositRepository extends JpaRepository<Deposit, Long> {
 
-    @Query("select sum(s.balance) as total_deposit from deposits s")
+    @Query("select sum(s.balance) as total_balance from deposits s")
     BigDecimal getTotalBalance();
 
     Deposit getByMemberId(Long memberId);

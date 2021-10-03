@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.alami.cooperation.util.ResponseUtil.toJson;
 import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.BDDMockito.given;
 
@@ -47,7 +48,7 @@ public class TransactionConsumerTests {
         transaction.setCreatedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-01-01"));
         given(transactionService.createTransaction(transactionDto)).willReturn(refEq(transaction));
 
-        transactionConsumer.consume(transactionDto);
+        transactionConsumer.consume(toJson(transactionDto));
     }
 
 

@@ -47,7 +47,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public TransactionDto createLoanTransaction(TransactionDto transactionDto) {
-        BigDecimal diffBalance = getDiffBalance(loanRepository.getTotalLoan(), depositService.getTotalDeposit());
+        BigDecimal diffBalance = getDiffBalance(depositService.getTotalDeposit(), loanRepository.getTotalLoan());
         validateLoan(transactionDto, diffBalance);
 
         transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
