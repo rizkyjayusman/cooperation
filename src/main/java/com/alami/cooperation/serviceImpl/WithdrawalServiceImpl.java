@@ -3,8 +3,8 @@ package com.alami.cooperation.serviceImpl;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Deposit;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
+import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.service.DepositService;
-import com.alami.cooperation.service.TransactionService;
 import com.alami.cooperation.service.WithdrawalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import static com.alami.cooperation.policy.DepositPolicy.isOverLimit;
 public class WithdrawalServiceImpl implements WithdrawalService {
 
     @Autowired
-    private TransactionService transactionService;
+    private TransactionPublisher transactionPublisher;
 
     private final DepositService depositService;
 
@@ -38,7 +38,7 @@ public class WithdrawalServiceImpl implements WithdrawalService {
         }
 
         transactionDto.setTransactionType(TransactionTypeEnum.WITHDRAWAL);
-        transactionService.createTransaction(transactionDto);
+        transactionPublisher.publish(transactionDto);
 
         depositService.subtractBalance(deposit, transactionDto);
 

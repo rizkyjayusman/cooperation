@@ -1,9 +1,7 @@
 package com.alami.cooperation.consumer;
 
 import com.alami.cooperation.dto.TransactionDto;
-import com.alami.cooperation.entity.Transaction;
-import com.alami.cooperation.entity.TransactionHistory;
-import com.alami.cooperation.service.TransactionHistoryService;
+import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +9,9 @@ import org.springframework.stereotype.Component;
 public class TransactionConsumer {
 
     @Autowired
-    private TransactionHistoryService transactionHistoryService;
+    private TransactionService transactionService;
 
     public void consume(TransactionDto transactionDto) {
-        transactionHistoryService.createTransactionHistory(transactionDto);
+        transactionService.createTransaction(transactionDto);
     }
 }

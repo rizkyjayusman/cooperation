@@ -1,10 +1,7 @@
 package com.alami.cooperation.serviceImpl;
 
-import com.alami.cooperation.controller.filter.Pagination;
-import com.alami.cooperation.controller.filter.TransactionFilter;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Transaction;
-import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.TransactionRepository;
 import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     private TransactionRepository transactionRepository;
-
-    @Autowired
-    private TransactionPublisher transactionPublisher;
 
     @Override
     public Page<Transaction> getTransactionList(Pageable pageable) {
@@ -39,8 +32,6 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setTransactionDate(transactionDto.getTransactionDate());
         transaction.setCreatedDate(new Date());
         transactionRepository.save(transaction);
-
-        transactionPublisher.publish(transactionDto);
     }
 
 }

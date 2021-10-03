@@ -3,9 +3,9 @@ package com.alami.cooperation.serviceImpl;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Deposit;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
+import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.DepositRepository;
 import com.alami.cooperation.service.DepositService;
-import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +18,7 @@ import java.util.Date;
 public class DepositServiceImpl implements DepositService {
 
     @Autowired
-    private TransactionService transactionService;
+    private TransactionPublisher transactionPublisher;
 
     private final DepositRepository depositRepository;
 
@@ -29,7 +29,7 @@ public class DepositServiceImpl implements DepositService {
     @Override
     public TransactionDto createDepositTransaction(TransactionDto transactionDto) {
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
-        transactionService.createTransaction(transactionDto);
+        transactionPublisher.publish(transactionDto);
 
         Deposit deposit = depositRepository.getByMemberId(transactionDto.getMemberId());
         if(deposit == null) {

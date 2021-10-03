@@ -3,9 +3,9 @@ package com.alami.cooperation.serviceImpl;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Loan;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
+import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.service.LoanService;
 import com.alami.cooperation.service.RepaymentService;
-import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class RepaymentServiceImpl implements RepaymentService {
     private LoanService loanService;
 
     @Autowired
-    private TransactionService transactionService;
+    private TransactionPublisher transactionPublisher;
 
     @Override
     public TransactionDto createRepaymentTransaction(TransactionDto transactionDto) {
@@ -28,7 +28,7 @@ public class RepaymentServiceImpl implements RepaymentService {
         validateRepayment(transactionDto, loan);
 
         transactionDto.setTransactionType(TransactionTypeEnum.REPAYMENT);
-        transactionService.createTransaction(transactionDto);
+        transactionPublisher.publish(transactionDto);
 
         loanService.subtractLoanAmount(loan, transactionDto);
         loanService.saveLoan(loan);
