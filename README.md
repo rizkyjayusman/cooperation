@@ -34,7 +34,7 @@ This tables shows which features that has been implemented by this repository.
 
 :x: : not yet supported natively by payment gateway
 
-| Features                        | Midtrans (Snap)                     |
+| Features                        | Status                              |
 | ------------------------------- | ----------------------------------- |
 | Get All Members                 | :white_check_mark:                  |
 | Add New Member                  | :white_check_mark:                  |
