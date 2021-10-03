@@ -2,18 +2,17 @@ package com.alami.cooperation.entity;
 
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@Entity(name = "transactions")
-@Table(name = "transactions")
+@Document(collection = "transactions")
 public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long memberId;
