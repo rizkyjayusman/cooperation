@@ -4,6 +4,7 @@ import com.alami.cooperation.controller.request.TransactionRequest;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Deposit;
 import com.alami.cooperation.service.DepositService;
+import com.alami.cooperation.vo.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,10 @@ public class DepositController {
     private DepositService depositService;
 
     @GetMapping
-    public Page<Deposit> getDepositList(Pageable pageable) {
-        return depositService.getDepositList(pageable);
+    public ResponseEntity<Object> getDepositList(Pageable pageable) {
+        Page<Deposit> page = depositService.getDepositList(pageable);
+        Pagination pagination = new Pagination(page.getContent(), page.getNumber(), page.getTotalElements(), page.getTotalPages());
+        return new ResponseEntity<>(pagination, HttpStatus.OK);
     }
 
     @PostMapping

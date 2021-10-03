@@ -4,6 +4,7 @@ import com.alami.cooperation.controller.request.TransactionRequest;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Loan;
 import com.alami.cooperation.service.LoanService;
+import com.alami.cooperation.vo.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,10 @@ public class LoanController {
     private LoanService loanService;
 
     @GetMapping
-    public Page<Loan> getLoanList(Pageable pageable) {
-        return loanService.getLoanList(pageable);
+    public ResponseEntity<Object> getLoanList(Pageable pageable) {
+        Page<Loan> page = loanService.getLoanList(pageable);
+        Pagination pagination = new Pagination(page.getContent(), page.getNumber(), page.getTotalElements(), page.getTotalPages());
+        return new ResponseEntity<>(pagination, HttpStatus.OK);
     }
 
 
