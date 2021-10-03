@@ -9,6 +9,6 @@ public interface TransactionService {
 
     Page<Transaction> getTransactionList(Pageable pageable);
 
-    void createTransaction(TransactionDto transactionDto);
+    Transaction createTransaction(TransactionDto transactionDto);
 
 }

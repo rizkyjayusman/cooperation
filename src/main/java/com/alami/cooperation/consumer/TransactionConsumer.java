@@ -8,8 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionConsumer {
 
-    @Autowired
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
+
+    public TransactionConsumer(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
 
     public void consume(TransactionDto transactionDto) {
         transactionService.createTransaction(transactionDto);

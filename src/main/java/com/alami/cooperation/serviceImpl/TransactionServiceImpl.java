@@ -24,14 +24,14 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void createTransaction(TransactionDto transactionDto) {
+    public Transaction createTransaction(TransactionDto transactionDto) {
         Transaction transaction = new Transaction();
         transaction.setMemberId(transactionDto.getMemberId());
         transaction.setAmount(transactionDto.getAmount());
         transaction.setTransactionType(transactionDto.getTransactionType());
         transaction.setTransactionDate(transactionDto.getTransactionDate());
         transaction.setCreatedDate(new Date());
-        transactionRepository.save(transaction);
+        return transactionRepository.save(transaction);
     }
 
 }
