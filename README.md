@@ -19,6 +19,10 @@ I used these tech stack for create this project with:
 
 </div>
 
+# Api Documentation
+
+I create an API Documentation using Swagger 2. you can look it on : http://localhost:8090/swagger-ui/
+
 # Build and Run
 
 
