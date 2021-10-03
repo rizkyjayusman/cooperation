@@ -32,7 +32,7 @@ public class LoanController {
     @Autowired
     private LoanService loanService;
 
-    @ApiOperation(value = "Get All Deposit")
+    @ApiOperation(value = "Get All Loan")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "get all loan successfully", response = Response.class),
     })
