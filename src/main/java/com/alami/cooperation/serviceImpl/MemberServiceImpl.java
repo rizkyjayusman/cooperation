@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -35,5 +36,11 @@ public class MemberServiceImpl implements MemberService {
         member.setCreatedDate(new Date());
         Member savedMember = memberRepository.saveAndFlush(member);
         return MemberDto.toDto(savedMember);
+    }
+
+    @Override
+    public Member getMemberById(Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        return member.orElse(null);
     }
 }

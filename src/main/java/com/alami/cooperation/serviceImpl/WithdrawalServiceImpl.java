@@ -2,9 +2,11 @@ package com.alami.cooperation.serviceImpl;
 
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Deposit;
+import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.service.DepositService;
+import com.alami.cooperation.service.MemberService;
 import com.alami.cooperation.service.WithdrawalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ import static com.alami.cooperation.policy.DepositPolicy.isOverLimit;
 
 @Service
 public class WithdrawalServiceImpl implements WithdrawalService {
+
+    @Autowired
+    private MemberService memberService;
 
     @Autowired
     private TransactionPublisher transactionPublisher;
@@ -28,6 +33,11 @@ public class WithdrawalServiceImpl implements WithdrawalService {
 
     @Override
     public TransactionDto createWithdrawalTransaction(TransactionDto transactionDto) {
+        Member member = memberService.getMemberById(transactionDto.getMemberId());
+        if(member == null) {
+            throw new RuntimeException("member not found");
+        }
+
         Deposit deposit = depositService.getByMemberId(transactionDto.getMemberId());
         if(deposit == null) {
             throw new RuntimeException("deposit was not found");

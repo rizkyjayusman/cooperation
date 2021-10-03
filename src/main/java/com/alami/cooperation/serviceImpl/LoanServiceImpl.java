@@ -2,11 +2,13 @@ package com.alami.cooperation.serviceImpl;
 
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Loan;
+import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.LoanRepository;
 import com.alami.cooperation.service.DepositService;
 import com.alami.cooperation.service.LoanService;
+import com.alami.cooperation.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private DepositService depositService;
+
+    @Autowired
+    private MemberService memberService;
 
     @Autowired
     private LoanRepository loanRepository;
@@ -47,6 +52,11 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public TransactionDto createLoanTransaction(TransactionDto transactionDto) {
+        Member member = memberService.getMemberById(transactionDto.getMemberId());
+        if(member == null) {
+            throw new RuntimeException("member not found");
+        }
+
         BigDecimal diffBalance = getDiffBalance(depositService.getTotalDeposit(), getTotalLoan());
         validateLoan(transactionDto, diffBalance);
 

@@ -10,4 +10,6 @@ public interface MemberService {
     Page<Member> getMemberList(Pageable pageable);
 
     MemberDto createMember(MemberDto memberDto);
+
+    Member getMemberById(Long memberId);
 }

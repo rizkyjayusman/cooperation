@@ -2,10 +2,12 @@ package com.alami.cooperation.serviceImpl;
 
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Deposit;
+import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.DepositRepository;
 import com.alami.cooperation.service.DepositService;
+import com.alami.cooperation.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,9 @@ public class DepositServiceImpl implements DepositService {
     @Autowired
     private TransactionPublisher transactionPublisher;
 
+    @Autowired
+    private MemberService memberService;
+
     private final DepositRepository depositRepository;
 
     public DepositServiceImpl(DepositRepository depositRepository) {
@@ -30,6 +35,11 @@ public class DepositServiceImpl implements DepositService {
     public TransactionDto createDepositTransaction(TransactionDto transactionDto) {
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
         transactionPublisher.publish(transactionDto);
+
+        Member member = memberService.getMemberById(transactionDto.getMemberId());
+        if(member == null) {
+            throw new RuntimeException("member not found");
+        }
 
         Deposit deposit = depositRepository.getByMemberId(transactionDto.getMemberId());
         if(deposit == null) {

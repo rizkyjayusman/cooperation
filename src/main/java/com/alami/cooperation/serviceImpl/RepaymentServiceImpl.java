@@ -2,9 +2,11 @@ package com.alami.cooperation.serviceImpl;
 
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Loan;
+import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.service.LoanService;
+import com.alami.cooperation.service.MemberService;
 import com.alami.cooperation.service.RepaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ import static com.alami.cooperation.policy.LoanPolicy.isPayable;
 public class RepaymentServiceImpl implements RepaymentService {
 
     @Autowired
+    private MemberService memberService;
+
+    @Autowired
     private LoanService loanService;
 
     @Autowired
@@ -23,6 +28,11 @@ public class RepaymentServiceImpl implements RepaymentService {
 
     @Override
     public TransactionDto createRepaymentTransaction(TransactionDto transactionDto) {
+        Member member = memberService.getMemberById(transactionDto.getMemberId());
+        if(member == null) {
+            throw new RuntimeException("member not found");
+        }
+
         Loan loan = loanService.getByMemberId(transactionDto.getMemberId());
 
         validateRepayment(transactionDto, loan);
