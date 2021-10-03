@@ -7,8 +7,12 @@ import com.alami.cooperation.service.DepositService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import static com.alami.cooperation.util.ResponseHandler.success;
 
 @RestController
 @RequestMapping("deposits")
@@ -23,11 +27,12 @@ public class DepositController {
     }
 
     @PostMapping
-    public void createDepositTransaction(@Validated @RequestBody TransactionRequest transactionRequest) {
+    public ResponseEntity<Object> createDepositTransaction(@Validated @RequestBody TransactionRequest transactionRequest) {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setAmount(transactionRequest.getAmount());
         transactionDto.setTransactionDate(transactionRequest.getTransactionDate());
         transactionDto.setMemberId(transactionRequest.getMemberId());
         depositService.createDepositTransaction(transactionDto);
+        return success("create deposit successfully", null, HttpStatus.OK);
     }
 }

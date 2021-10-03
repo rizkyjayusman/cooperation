@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -30,7 +32,8 @@ public class MemberServiceImpl implements MemberService {
         member.setLastName(memberDto.getLastName());
         member.setBirthDate(memberDto.getBirthDate());
         member.setAddress(memberDto.getAddress());
-        memberRepository.save(member);
-        return memberDto;
+        member.setCreatedDate(new Date());
+        Member savedMember = memberRepository.saveAndFlush(member);
+        return MemberDto.toDto(savedMember);
     }
 }

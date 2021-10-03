@@ -88,7 +88,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void createMember_shouldReturnHttp200_givenValidMember() throws Exception {
+    public void createMember_shouldReturnHttp204_givenValidMember() throws Exception {
         MemberDto mockMemberDto = new MemberDto();
         mockMemberDto.setFirstName("Wawan");
         mockMemberDto.setLastName("Setiawan");
@@ -106,7 +106,7 @@ public class MemberControllerTests {
             .contentType(MediaType.APPLICATION_JSON)
             .content(toJson(memberRequest))
             .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(memberService, times(1)).createMember(refEq(mockMemberDto));
     }

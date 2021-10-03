@@ -47,7 +47,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public TransactionDto createLoanTransaction(TransactionDto transactionDto) {
-        BigDecimal diffBalance = getDiffBalance(depositService.getTotalDeposit(), loanRepository.getTotalLoan());
+        BigDecimal diffBalance = getDiffBalance(depositService.getTotalDeposit(), getTotalLoan());
         validateLoan(transactionDto, diffBalance);
 
         transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
@@ -65,6 +65,15 @@ public class LoanServiceImpl implements LoanService {
         loan.setUpdatedDate(new Date());
         loanRepository.save(loan);
         return transactionDto;
+    }
+
+    private BigDecimal getTotalLoan() {
+        BigDecimal totalLoan = loanRepository.getTotalLoan();
+        if(totalLoan == null) {
+            return new BigDecimal(0);
+        }
+
+        return totalLoan;
     }
 
     private BigDecimal getDiffBalance(BigDecimal totalDeposit, BigDecimal totalLoan) {
