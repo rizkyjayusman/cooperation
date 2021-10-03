@@ -13,27 +13,27 @@ import java.text.SimpleDateFormat;
 public class LoanPolicyTests {
 
     @Test
-    public void isOverLimit_shouldReturnTrue_givenTransactionAmountGreaterThanTotalSaving() throws Exception {
+    public void isOverLimit_shouldReturnTrue_givenTransactionAmountGreaterThanTotalBalance() throws Exception {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setMemberId(1L);
         transactionDto.setAmount(new BigDecimal(1000000));
         transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
         transactionDto.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-08-17"));
 
-        BigDecimal totalSaving = new BigDecimal(500000);
-        Assertions.assertTrue(LoanPolicy.isOverLimit(transactionDto, totalSaving));
+        BigDecimal totalBalance = new BigDecimal(500000);
+        Assertions.assertTrue(LoanPolicy.isOverLimit(transactionDto, totalBalance));
     }
 
     @Test
-    public void isOverLimit_shouldReturnFalse_givenTransactionAmountLessThanTotalSaving() throws Exception {
+    public void isOverLimit_shouldReturnFalse_givenTransactionAmountLessThanTotalBalance() throws Exception {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setMemberId(1L);
         transactionDto.setAmount(new BigDecimal(1000000));
         transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
         transactionDto.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-08-17"));
 
-        BigDecimal totalSaving = new BigDecimal(1500000);
-        Assertions.assertFalse(LoanPolicy.isOverLimit(transactionDto, totalSaving));
+        BigDecimal totalBalance = new BigDecimal(1500000);
+        Assertions.assertFalse(LoanPolicy.isOverLimit(transactionDto, totalBalance));
     }
 
     @Test

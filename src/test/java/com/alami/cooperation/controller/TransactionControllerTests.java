@@ -33,24 +33,24 @@ public class TransactionControllerTests {
     @MockBean
     private TransactionService transactionService;
 
-    private Transaction createSavingTransactionWawan() throws ParseException {
+    private Transaction createDepositTransactionWawan() throws ParseException {
         Transaction transaction = new Transaction();
         transaction.setId(1L);
         transaction.setMemberId(1L);
         transaction.setAmount(new BigDecimal(1000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-08-17"));
-        transaction.setTransactionType(TransactionTypeEnum.SAVING);
+        transaction.setTransactionType(TransactionTypeEnum.DEPOSIT);
 
         return transaction;
     }
 
-    private Transaction createSavingTransactionTeguh() throws ParseException {
+    private Transaction createDepositTransactionTeguh() throws ParseException {
         Transaction transaction = new Transaction();
         transaction.setId(2L);
         transaction.setMemberId(2L);
         transaction.setAmount(new BigDecimal(5000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-08-18"));
-        transaction.setTransactionType(TransactionTypeEnum.SAVING);
+        transaction.setTransactionType(TransactionTypeEnum.DEPOSIT);
 
         return transaction;
     }
@@ -77,24 +77,24 @@ public class TransactionControllerTests {
         return transaction;
     }
 
-    private Transaction createSavingTransactionWawanTwo() throws ParseException {
+    private Transaction createDepositTransactionWawanTwo() throws ParseException {
         Transaction transaction = new Transaction();
         transaction.setId(5L);
         transaction.setMemberId(1L);
         transaction.setAmount(new BigDecimal(5000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-12-01"));
-        transaction.setTransactionType(TransactionTypeEnum.SAVING);
+        transaction.setTransactionType(TransactionTypeEnum.DEPOSIT);
 
         return transaction;
     }
 
-    private Transaction createDebitTransactionTeguh() throws ParseException {
+    private Transaction createWithdrawalTransactionTeguh() throws ParseException {
         Transaction transaction = new Transaction();
         transaction.setId(6L);
         transaction.setMemberId(2L);
         transaction.setAmount(new BigDecimal(2000000));
         transaction.setTransactionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2020-12-01"));
-        transaction.setTransactionType(TransactionTypeEnum.DEBIT);
+        transaction.setTransactionType(TransactionTypeEnum.WITHDRAWAL);
 
         return transaction;
     }
@@ -103,12 +103,12 @@ public class TransactionControllerTests {
     public void getTransactionList_shouldReturnHttp200_givenValidTransactionList() throws Exception {
         PageRequest pageRequest = PageRequest.of(0, 10);
         Transaction[] transactionArr = new Transaction[] {
-                createSavingTransactionWawan(),
-                createSavingTransactionTeguh(),
+                createDepositTransactionWawan(),
+                createDepositTransactionTeguh(),
                 createLoanTransactionJoko(),
                 createPayLoanTransactionJoko(),
-                createSavingTransactionWawanTwo(),
-                createDebitTransactionTeguh()
+                createDepositTransactionWawanTwo(),
+                createWithdrawalTransactionTeguh()
         };
 
         List<Transaction> transactionList = Arrays.asList(transactionArr);

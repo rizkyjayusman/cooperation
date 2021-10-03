@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@Entity(name = "savings")
-@Table(name = "savings")
-public class Saving {
+@Entity(name = "deposits")
+@Table(name = "deposits")
+public class Deposit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class Saving {
 
     private Long memberId;
 
-    private BigDecimal amount;
+    private BigDecimal balance;
 
     private Date createdDate;
 

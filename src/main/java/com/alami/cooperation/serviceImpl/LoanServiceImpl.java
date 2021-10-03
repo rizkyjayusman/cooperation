@@ -4,8 +4,8 @@ import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Loan;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.repository.LoanRepository;
+import com.alami.cooperation.service.DepositService;
 import com.alami.cooperation.service.LoanService;
-import com.alami.cooperation.service.SavingService;
 import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,7 +24,7 @@ public class LoanServiceImpl implements LoanService {
     private TransactionService transactionService;
 
     @Autowired
-    private SavingService savingService;
+    private DepositService depositService;
 
     @Autowired
     private LoanRepository loanRepository;
@@ -47,8 +47,8 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public TransactionDto createLoanTransaction(TransactionDto transactionDto) {
-        BigDecimal diffSaving = getDiffSaving(loanRepository.getTotalLoan(), savingService.getTotalSaving());
-        validateLoan(transactionDto, diffSaving);
+        BigDecimal diffBalance = getDiffBalance(loanRepository.getTotalLoan(), depositService.getTotalDeposit());
+        validateLoan(transactionDto, diffBalance);
 
         transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
         transactionService.createTransaction(transactionDto);
@@ -67,12 +67,12 @@ public class LoanServiceImpl implements LoanService {
         return transactionDto;
     }
 
-    private BigDecimal getDiffSaving(BigDecimal totalSaving, BigDecimal totalLoan) {
-        return totalSaving.subtract(totalLoan);
+    private BigDecimal getDiffBalance(BigDecimal totalDeposit, BigDecimal totalLoan) {
+        return totalDeposit.subtract(totalLoan);
     }
 
-    private void validateLoan(TransactionDto transactionDto, BigDecimal totalSaving) {
-        if(isOverLimit(transactionDto, totalSaving)) {
+    private void validateLoan(TransactionDto transactionDto, BigDecimal totalDeposit) {
+        if(isOverLimit(transactionDto, totalDeposit)) {
             throw new RuntimeException("loan was over limit");
         }
     }

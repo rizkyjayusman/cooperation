@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 
 public class LoanPolicy {
 
-    public static boolean isOverLimit(TransactionDto transactionDto, BigDecimal totalSaving) {
-        return totalSaving.compareTo(transactionDto.getAmount()) < 0;
+    public static boolean isOverLimit(TransactionDto transactionDto, BigDecimal totalDeposit) {
+        return totalDeposit.compareTo(transactionDto.getAmount()) < 0;
     }
 
     public static boolean isOverPay(TransactionDto transactionDto, Loan loan) {

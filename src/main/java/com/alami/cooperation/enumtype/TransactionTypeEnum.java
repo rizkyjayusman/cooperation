@@ -2,8 +2,8 @@ package com.alami.cooperation.enumtype;
 
 public enum TransactionTypeEnum {
 
-    SAVING,
-    DEBIT,
+    DEPOSIT,
+    WITHDRAWAL,
     LOAN,
     PAY_LOAN,
 
