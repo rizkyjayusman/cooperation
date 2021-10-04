@@ -3,6 +3,7 @@ package com.alami.cooperation.serviceImpl;
 import com.alami.cooperation.controller.filter.TransactionFilter;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.TransactionHistory;
+import com.alami.cooperation.mapper.TransactionHistoryMapper;
 import com.alami.cooperation.repository.TransactionHistoryRepository;
 import com.alami.cooperation.service.TransactionHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,7 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService 
 
     @Override
     public TransactionHistory createTransactionHistory(TransactionDto transactionDto) {
-        TransactionHistory transaction = new TransactionHistory();
-        transaction.setMemberId(transactionDto.getMemberId());
-        transaction.setAmount(transactionDto.getAmount());
-        transaction.setTransactionType(transactionDto.getTransactionType());
-        transaction.setTransactionDate(transactionDto.getTransactionDate());
-        transaction.setCreatedDate(new Date());
+        TransactionHistory transaction = TransactionHistoryMapper.createTransactionHistory(transactionDto);
         return transactionHistoryRepository.save(transaction);
     }
 

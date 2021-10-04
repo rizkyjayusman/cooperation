@@ -2,6 +2,7 @@ package com.alami.cooperation.serviceImpl;
 
 import com.alami.cooperation.dto.MemberDto;
 import com.alami.cooperation.entity.Member;
+import com.alami.cooperation.mapper.MemberMapper;
 import com.alami.cooperation.repository.MemberRepository;
 import com.alami.cooperation.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDto createMember(MemberDto memberDto) {
-        Member member = new Member();
-        member.setFirstName(memberDto.getFirstName());
-        member.setLastName(memberDto.getLastName());
-        member.setBirthDate(memberDto.getBirthDate());
-        member.setAddress(memberDto.getAddress());
-        member.setCreatedDate(new Date());
-        Member savedMember = memberRepository.save(member);
-        return MemberDto.toDto(savedMember);
+        Member savedMember = memberRepository.save(MemberMapper.createMember(memberDto));
+        return MemberMapper.createMemberDto(savedMember);
     }
 
     @Override

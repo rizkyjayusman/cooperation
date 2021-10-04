@@ -55,6 +55,7 @@ public class WithdrawalServiceImpl implements WithdrawalService {
         depositService.subtractBalance(deposit, transactionDto);
 
         depositService.saveDeposit(deposit);
+
         return transactionDto;
     }
 }

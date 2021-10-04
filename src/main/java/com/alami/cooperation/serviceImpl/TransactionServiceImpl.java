@@ -3,6 +3,7 @@ package com.alami.cooperation.serviceImpl;
 import com.alami.cooperation.controller.filter.TransactionFilter;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Transaction;
+import com.alami.cooperation.mapper.TransactionMapper;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.TransactionRepository;
 import com.alami.cooperation.service.TransactionHistoryService;
@@ -34,14 +35,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction createTransaction(TransactionDto transactionDto) {
-        Transaction transaction = new Transaction();
-        transaction.setMemberId(transactionDto.getMemberId());
-        transaction.setAmount(transactionDto.getAmount());
-        transaction.setTransactionType(transactionDto.getTransactionType());
-        transaction.setTransactionDate(transactionDto.getTransactionDate());
-        transaction.setCreatedDate(new Date());
+        Transaction transaction = TransactionMapper.createTransaction(transactionDto);
         Transaction savedTransaction =  transactionRepository.save(transaction);
-
         transactionPublisher.publish(transactionDto);
         return savedTransaction;
     }
@@ -51,7 +46,7 @@ public class TransactionServiceImpl implements TransactionService {
         if(transactionFilter.getMemberId() != null) {
             return transactionRepository.findByMemberId(transactionFilter.getMemberId(), pageable);
         }
-//
+
         if(transactionFilter.getFromDate() == null) {
             transactionFilter.setFromDate(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3)));
         }

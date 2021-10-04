@@ -22,14 +22,4 @@ public class MemberDto {
 
     private Date createdDate;
 
-    public static MemberDto toDto(Member member) {
-        MemberDto memberDto = new MemberDto();
-        memberDto.setId(memberDto.getId());
-        memberDto.setFirstName(member.getFirstName());
-        memberDto.setLastName(member.getLastName());
-        memberDto.setBirthDate(member.getBirthDate());
-        memberDto.setAddress(member.getAddress());
-        memberDto.setCreatedDate(member.getCreatedDate());
-        return memberDto;
-    }
 }

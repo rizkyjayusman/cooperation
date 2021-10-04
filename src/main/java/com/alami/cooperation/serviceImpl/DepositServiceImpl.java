@@ -5,6 +5,7 @@ import com.alami.cooperation.entity.Deposit;
 import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.exception.BaseException;
+import com.alami.cooperation.mapper.DepositMapper;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.DepositRepository;
 import com.alami.cooperation.service.DepositService;
@@ -39,27 +40,28 @@ public class DepositServiceImpl implements DepositService {
         transactionService.createTransaction(transactionDto);
 
         Member member = memberService.getMemberById(transactionDto.getMemberId());
-        if(member == null) {
-            throw new BaseException("member not found");
-        }
+        validateTransactionMember(member);
 
         Deposit deposit = depositRepository.getByMemberId(transactionDto.getMemberId());
         if(deposit == null) {
-            deposit = new Deposit();
-            deposit.setMemberId(transactionDto.getMemberId());
-            deposit.setCreatedDate(new Date());
-            deposit.setBalance(new BigDecimal(0));
+            deposit = DepositMapper.createDeposit(transactionDto.getMemberId(), new BigDecimal(0));
         }
 
         addDepositBalance(deposit, transactionDto);
-        deposit.setUpdatedDate(new Date());
+
         depositRepository.save(deposit);
         return transactionDto;
     }
 
+    private void validateTransactionMember(Member member) throws BaseException {
+        if(member == null) {
+            throw new BaseException("member not found");
+        }
+    }
+
     public void addDepositBalance(Deposit deposit, TransactionDto transactionDto) {
         BigDecimal balance = deposit.getBalance().add(transactionDto.getAmount());
-        deposit.setBalance(balance);
+        DepositMapper.updateDeposit(deposit, balance);
     }
 
     @Override

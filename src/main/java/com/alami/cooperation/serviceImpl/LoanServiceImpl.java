@@ -5,6 +5,7 @@ import com.alami.cooperation.entity.Loan;
 import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.exception.BaseException;
+import com.alami.cooperation.mapper.LoanMapper;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.LoanRepository;
 import com.alami.cooperation.service.DepositService;
@@ -67,14 +68,10 @@ public class LoanServiceImpl implements LoanService {
 
         Loan loan = loanRepository.getByMemberId(transactionDto.getMemberId());
         if(loan == null) {
-            loan = new Loan();
-            loan.setMemberId(transactionDto.getMemberId());
-            loan.setAmount(new BigDecimal(0));
-            loan.setCreatedDate(new Date());
+            loan = LoanMapper.createLoan(transactionDto.getMemberId(), new BigDecimal(0));
         }
 
         addLoanAmount(loan, transactionDto);
-        loan.setUpdatedDate(new Date());
         loanRepository.save(loan);
         return transactionDto;
     }
@@ -100,11 +97,11 @@ public class LoanServiceImpl implements LoanService {
 
     private void addLoanAmount(Loan loan, TransactionDto transactionDto) {
         BigDecimal amount = loan.getAmount().add(transactionDto.getAmount());
-        loan.setAmount(amount);
+        LoanMapper.updateLoan(loan, amount);
     }
 
     public void subtractLoanAmount(Loan loan, TransactionDto transactionDto) {
         BigDecimal amount = loan.getAmount().subtract(transactionDto.getAmount());
-        loan.setAmount(amount);
+        LoanMapper.updateLoan(loan, amount);
     }
 }
