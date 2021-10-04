@@ -1,6 +1,6 @@
 # Introduction
 
-this repository is my take home project interview from some company in Jakarta
+This repository contains about a deposit and loan management application in a village that nowhere. hehe.
 
 # Tech Stack
 
@@ -10,6 +10,7 @@ I used these tech stack for create this project with:
 * PostgreDB
 * MongoDB
 * [Kafka](https://kafka.apache.org/)
+* Swagger 2
 
 # Architecture
 
@@ -21,7 +22,7 @@ I used these tech stack for create this project with:
 
 # Api Documentation
 
-I create an API Documentation using Swagger 2. you can look it on : http://localhost:8090/swagger-ui/
+This project already have an API Documentation that we create using Swagger 2. You can read that documentation on : http://localhost:8090/swagger-ui/
 
 
 # Implemented Features
