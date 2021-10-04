@@ -33,7 +33,7 @@ This tables shows which features that has been implemented by this repository.
 
 :heavy_exclamation_mark: : in progress
 
-:x: : not yet supported natively by payment gateway
+:x: : not yet implemented
 
 | Features                        | Status                              |
 | ------------------------------- | ----------------------------------- |
