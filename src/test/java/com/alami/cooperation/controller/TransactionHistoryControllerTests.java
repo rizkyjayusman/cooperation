@@ -1,7 +1,10 @@
 package com.alami.cooperation.controller;
 
+import com.alami.cooperation.controller.filter.TransactionFilter;
 import com.alami.cooperation.entity.Transaction;
+import com.alami.cooperation.entity.TransactionHistory;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
+import com.alami.cooperation.service.TransactionHistoryService;
 import com.alami.cooperation.service.TransactionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +28,17 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(TransactionController.class)
-public class TransactionControllerTests {
+@WebMvcTest(TransactionHistoryController.class)
+public class TransactionHistoryControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private TransactionService transactionService;
+    private TransactionHistoryService transactionHistoryService;
 
-    private Transaction createDepositTransactionWawan() throws ParseException {
-        Transaction transaction = new Transaction();
+    private TransactionHistory createDepositTransactionWawan() throws ParseException {
+        TransactionHistory transaction = new TransactionHistory();
 //        transaction.setId(1L);
         transaction.setMemberId(1L);
         transaction.setAmount(new BigDecimal(1000000));
@@ -45,8 +48,8 @@ public class TransactionControllerTests {
         return transaction;
     }
 
-    private Transaction createDepositTransactionTeguh() throws ParseException {
-        Transaction transaction = new Transaction();
+    private TransactionHistory createDepositTransactionTeguh() throws ParseException {
+        TransactionHistory transaction = new TransactionHistory();
 //        transaction.setId(2L);
         transaction.setMemberId(2L);
         transaction.setAmount(new BigDecimal(5000000));
@@ -56,8 +59,8 @@ public class TransactionControllerTests {
         return transaction;
     }
 
-    private Transaction createLoanTransactionJoko() throws ParseException {
-        Transaction transaction = new Transaction();
+    private TransactionHistory createLoanTransactionJoko() throws ParseException {
+        TransactionHistory transaction = new TransactionHistory();
 //        transaction.setId(3L);
         transaction.setMemberId(3L);
         transaction.setAmount(new BigDecimal(2000000));
@@ -67,8 +70,8 @@ public class TransactionControllerTests {
         return transaction;
     }
 
-    private Transaction createRepaymentTransactionJoko() throws ParseException {
-        Transaction transaction = new Transaction();
+    private TransactionHistory createRepaymentTransactionJoko() throws ParseException {
+        TransactionHistory transaction = new TransactionHistory();
 //        transaction.setId(4L);
         transaction.setMemberId(3L);
         transaction.setAmount(new BigDecimal(1000000));
@@ -78,8 +81,8 @@ public class TransactionControllerTests {
         return transaction;
     }
 
-    private Transaction createDepositTransactionWawanTwo() throws ParseException {
-        Transaction transaction = new Transaction();
+    private TransactionHistory createDepositTransactionWawanTwo() throws ParseException {
+        TransactionHistory transaction = new TransactionHistory();
 //        transaction.setId(5L);
         transaction.setMemberId(1L);
         transaction.setAmount(new BigDecimal(5000000));
@@ -89,8 +92,8 @@ public class TransactionControllerTests {
         return transaction;
     }
 
-    private Transaction createWithdrawalTransactionTeguh() throws ParseException {
-        Transaction transaction = new Transaction();
+    private TransactionHistory createWithdrawalTransactionTeguh() throws ParseException {
+        TransactionHistory transaction = new TransactionHistory();
 //        transaction.setId(6L);
         transaction.setMemberId(2L);
         transaction.setAmount(new BigDecimal(2000000));
@@ -102,9 +105,9 @@ public class TransactionControllerTests {
 
     // TODO why transactionService.getMemberList already mocked but the transactionPage return null
     @Test
-    public void getTransactionList_shouldReturnHttp200_givenValidTransactionList() throws Exception {
+    public void getTransactionHistoryList_shouldReturnHttp200_givenValidTransactionHistoryList() throws Exception {
         PageRequest pageRequest = PageRequest.of(0, 10);
-        Transaction[] transactionArr = new Transaction[] {
+        TransactionHistory[] transactionArr = new TransactionHistory[] {
                 createDepositTransactionWawan(),
                 createDepositTransactionTeguh(),
                 createLoanTransactionJoko(),
@@ -113,17 +116,19 @@ public class TransactionControllerTests {
                 createWithdrawalTransactionTeguh()
         };
 
-        List<Transaction> transactionList = Arrays.asList(transactionArr);
-        Page<Transaction> transactionPage = new PageImpl<Transaction>(transactionList, pageRequest, transactionList.size());
+        List<TransactionHistory> transactionList = Arrays.asList(transactionArr);
+        Page<TransactionHistory> transactionPage = new PageImpl<TransactionHistory>(transactionList, pageRequest, transactionList.size());
 
-        given(transactionService.getTransactionList(pageRequest)).willReturn(transactionPage);
+        TransactionFilter transactionFilter = new TransactionFilter();
+        transactionFilter.setMemberId(1L);
+        given(transactionHistoryService.getTransactionHistoryList(transactionFilter, pageRequest)).willReturn(transactionPage);
 
-        mockMvc.perform(get("/transactions?page=0&size=10")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/transactions/histories?page=0&size=10")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(transactionService, times(1)).getTransactionList(pageRequest);
+        verify(transactionHistoryService, times(1)).getTransactionHistoryList(transactionFilter, pageRequest);
     }
 
 }

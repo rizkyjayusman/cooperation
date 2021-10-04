@@ -60,7 +60,7 @@ public class LoanControllerTests {
     }
 
     // TODO why loanService.getLoanList already mocked but the loanPage return null
-//    @Test
+    @Test
     public void getLoanList_shouldReturnHttp200_givenValidLoanList() throws Exception {
         PageRequest pageRequest = PageRequest.of(0, 10);
         Loan[] loan = new Loan[] {createLoanWawan(), createLoanJoko()};

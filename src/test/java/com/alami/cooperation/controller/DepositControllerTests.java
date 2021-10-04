@@ -71,7 +71,7 @@ public class DepositControllerTests {
     }
 
     // TODO why depositService.getDepositList already mocked but the depositPage return null
-//    @Test
+    @Test
     public void getDepositList_shouldReturnHttp200_givenValidDepositList() throws Exception {
         PageRequest pageRequest = PageRequest.of(0, 10);
         Deposit[] depositArr = new Deposit[] {createDepositWawan(), createDepositTeguh(), createDepositJoko()};
