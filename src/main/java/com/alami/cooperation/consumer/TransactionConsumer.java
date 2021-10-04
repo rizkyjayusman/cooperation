@@ -1,6 +1,7 @@
 package com.alami.cooperation.consumer;
 
 import com.alami.cooperation.dto.TransactionDto;
+import com.alami.cooperation.service.TransactionHistoryService;
 import com.alami.cooperation.service.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +17,10 @@ import static com.alami.cooperation.util.ResponseUtil.toJson;
 @Component
 public class TransactionConsumer {
 
-    private final TransactionService transactionService;
+    private final TransactionHistoryService transactionHistoryService;
 
-    public TransactionConsumer(TransactionService transactionService) {
-        this.transactionService = transactionService;
+    public TransactionConsumer(TransactionHistoryService transactionHistoryService) {
+        this.transactionHistoryService = transactionHistoryService;
     }
 
     @KafkaListener(topics = "transaction_detail", groupId = "group_id")
@@ -28,7 +29,7 @@ public class TransactionConsumer {
         try {
             ObjectMapper mapper = new ObjectMapper();
             TransactionDto transactionDto = mapper.readValue(message, TransactionDto.class);
-            transactionService.createTransaction(transactionDto);
+            transactionHistoryService.createTransactionHistory(transactionDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

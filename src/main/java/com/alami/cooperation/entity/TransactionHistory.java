@@ -9,13 +9,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@Entity(name = "transactions")
-@Table(name = "transactions")
-public class Transaction {
+@Document(collection = "transaction_histories")
+public class TransactionHistory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private Long memberId;
 

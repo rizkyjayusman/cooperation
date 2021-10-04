@@ -12,8 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
-public interface TransactionRepository extends MongoRepository<Transaction, String> {
+public interface TransactionRepository extends PagingAndSortingRepository<Transaction, Long> {
+
     Page<Transaction> findByMemberId(Long memberId, Pageable pageable);
 
-    Page<Transaction> findAByTransactionDateBetween(Date fromDate, Date endDate, Pageable pageable);
+    Page<Transaction> findByTransactionDateBetween(Date fromDate, Date endDate, Pageable pageable);
 }

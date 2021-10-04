@@ -10,6 +10,7 @@ import com.alami.cooperation.repository.LoanRepository;
 import com.alami.cooperation.service.DepositService;
 import com.alami.cooperation.service.LoanService;
 import com.alami.cooperation.service.MemberService;
+import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ import static com.alami.cooperation.policy.LoanPolicy.*;
 public class LoanServiceImpl implements LoanService {
 
     @Autowired
-    private TransactionPublisher transactionPublisher;
+    private TransactionService transactionService;
 
     @Autowired
     private DepositService depositService;
@@ -62,7 +63,7 @@ public class LoanServiceImpl implements LoanService {
         validateLoan(transactionDto, diffBalance);
 
         transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
-        transactionPublisher.publish(transactionDto);
+        transactionService.createTransaction(transactionDto);
 
         Loan loan = loanRepository.getByMemberId(transactionDto.getMemberId());
         if(loan == null) {

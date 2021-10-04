@@ -3,7 +3,9 @@ package com.alami.cooperation.serviceImpl;
 import com.alami.cooperation.controller.filter.TransactionFilter;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Transaction;
+import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.TransactionRepository;
+import com.alami.cooperation.service.TransactionHistoryService;
 import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,11 +19,16 @@ import java.util.concurrent.TimeUnit;
 public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
+    private TransactionHistoryService transactionHistoryService;
+
+    @Autowired
+    private TransactionPublisher transactionPublisher;
+
+    @Autowired
     private TransactionRepository transactionRepository;
 
     @Override
     public Page<Transaction> getTransactionList(Pageable pageable) {
-        // TODO find all with filter and paging
         return transactionRepository.findAll(pageable);
     }
 
@@ -33,7 +40,10 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setTransactionType(transactionDto.getTransactionType());
         transaction.setTransactionDate(transactionDto.getTransactionDate());
         transaction.setCreatedDate(new Date());
-        return transactionRepository.save(transaction);
+        Transaction savedTransaction =  transactionRepository.save(transaction);
+
+        transactionPublisher.publish(transactionDto);
+        return savedTransaction;
     }
 
     @Override
@@ -47,11 +57,10 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         if(transactionFilter.getEndDate() == null) {
-            transactionFilter.setFromDate(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)));
+            transactionFilter.setEndDate(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)));
         }
 
-//        return transactionRepository.findAll(pageable);
-        return transactionRepository.findAByTransactionDateBetween(transactionFilter.getFromDate(), transactionFilter.getEndDate(), pageable);
+        return transactionRepository.findByTransactionDateBetween(transactionFilter.getFromDate(), transactionFilter.getEndDate(), pageable);
     }
 
 }

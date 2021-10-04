@@ -9,6 +9,7 @@ import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.DepositRepository;
 import com.alami.cooperation.service.DepositService;
 import com.alami.cooperation.service.MemberService;
+import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ import java.util.Date;
 public class DepositServiceImpl implements DepositService {
 
     @Autowired
-    private TransactionPublisher transactionPublisher;
+    private TransactionService transactionService;
 
     @Autowired
     private MemberService memberService;
@@ -35,7 +36,7 @@ public class DepositServiceImpl implements DepositService {
     @Override
     public TransactionDto createDepositTransaction(TransactionDto transactionDto) throws BaseException {
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
-        transactionPublisher.publish(transactionDto);
+        transactionService.createTransaction(transactionDto);
 
         Member member = memberService.getMemberById(transactionDto.getMemberId());
         if(member == null) {

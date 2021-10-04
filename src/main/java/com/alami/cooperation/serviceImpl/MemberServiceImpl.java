@@ -34,7 +34,7 @@ public class MemberServiceImpl implements MemberService {
         member.setBirthDate(memberDto.getBirthDate());
         member.setAddress(memberDto.getAddress());
         member.setCreatedDate(new Date());
-        Member savedMember = memberRepository.saveAndFlush(member);
+        Member savedMember = memberRepository.save(member);
         return MemberDto.toDto(savedMember);
     }
 

@@ -9,6 +9,7 @@ import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.service.LoanService;
 import com.alami.cooperation.service.MemberService;
 import com.alami.cooperation.service.RepaymentService;
+import com.alami.cooperation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class RepaymentServiceImpl implements RepaymentService {
     private LoanService loanService;
 
     @Autowired
-    private TransactionPublisher transactionPublisher;
+    private TransactionService transactionService;
 
     @Override
     public TransactionDto createRepaymentTransaction(TransactionDto transactionDto) throws BaseException {
@@ -39,7 +40,7 @@ public class RepaymentServiceImpl implements RepaymentService {
         validateRepayment(transactionDto, loan);
 
         transactionDto.setTransactionType(TransactionTypeEnum.REPAYMENT);
-        transactionPublisher.publish(transactionDto);
+        transactionService.createTransaction(transactionDto);
 
         loanService.subtractLoanAmount(loan, transactionDto);
         loanService.saveLoan(loan);

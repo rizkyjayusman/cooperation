@@ -8,6 +8,7 @@ import com.alami.cooperation.exception.BaseException;
 import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.service.DepositService;
 import com.alami.cooperation.service.MemberService;
+import com.alami.cooperation.service.TransactionService;
 import com.alami.cooperation.service.WithdrawalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class WithdrawalServiceImpl implements WithdrawalService {
     private MemberService memberService;
 
     @Autowired
-    private TransactionPublisher transactionPublisher;
+    private TransactionService transactionService;
 
     private final DepositService depositService;
 
@@ -49,7 +50,7 @@ public class WithdrawalServiceImpl implements WithdrawalService {
         }
 
         transactionDto.setTransactionType(TransactionTypeEnum.WITHDRAWAL);
-        transactionPublisher.publish(transactionDto);
+        transactionService.createTransaction(transactionDto);
 
         depositService.subtractBalance(deposit, transactionDto);
 

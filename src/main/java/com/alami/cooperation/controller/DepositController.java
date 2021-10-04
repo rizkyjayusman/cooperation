@@ -29,8 +29,11 @@ import static com.alami.cooperation.handler.ResponseHandler.success;
 @RequestMapping("deposits")
 public class DepositController {
 
-    @Autowired
-    private DepositService depositService;
+    private final DepositService depositService;
+
+    public DepositController(DepositService depositService) {
+        this.depositService = depositService;
+    }
 
     @ApiOperation(value = "Get All Deposit")
     @ApiResponses(value = {
