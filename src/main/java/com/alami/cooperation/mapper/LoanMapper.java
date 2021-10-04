@@ -7,10 +7,10 @@ import java.util.Date;
 
 public class LoanMapper {
 
-    public static Loan createLoan(Long memberId, BigDecimal balance) {
+    public static Loan createLoan(Long memberId, BigDecimal amount) {
         Loan loan = new Loan();
         loan.setMemberId(memberId);
-        loan.setAmount(balance);
+        loan.setAmount(amount);
         loan.setCreatedDate(new Date());
 
         return loan;

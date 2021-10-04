@@ -20,7 +20,7 @@ public class MemberMapper {
 
     public static MemberDto createMemberDto(Member member) {
         MemberDto memberDto = new MemberDto();
-        memberDto.setId(memberDto.getId());
+        memberDto.setId(member.getId());
         memberDto.setFirstName(member.getFirstName());
         memberDto.setLastName(member.getLastName());
         memberDto.setBirthDate(member.getBirthDate());
