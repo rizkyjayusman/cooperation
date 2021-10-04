@@ -43,8 +43,10 @@ This tables shows which features that has been implemented by this repository.
 | ------------------------------- | ----------------------------------- |
 | Get All Members                 | :white_check_mark:                  |
 | Add New Member                  | :white_check_mark:                  |
-| Get All Transaction History     | :white_check_mark:                  |
-| Create Transaction History      | :white_check_mark:                  |
+| Get All Transaction             | :white_check_mark:                  |
+| Create Transaction              | :white_check_mark:                  |
+| Get All Transaction Log         | :white_check_mark:                  |
+| Create Transaction Log          | :white_check_mark:                  |
 | Get All Member's Deposit        | :white_check_mark:                  |
 | Create Deposit                  | :white_check_mark:                  |
 | Create Withdrawal               | :white_check_mark:                  |
