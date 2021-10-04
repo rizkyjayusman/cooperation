@@ -22,7 +22,11 @@ I used these tech stack for create this project with:
 
 # Api Documentation
 
-This project already have an API Documentation that we create using Swagger 2. You can read that documentation on : http://localhost:8090/swagger-ui/
+This project already have an API Documentation that we create using Swagger 2. 
+
+You can read that documentation on : http://localhost:8090/swagger-ui/
+
+You also can test our API using Postman. The Postman file on directory docs/cooperation.postman_collection.json
 
 
 # Implemented Features
