@@ -51,7 +51,7 @@ This tables shows which features that has been implemented by this repository.
 | Api Documentation with Swagger  | :white_check_mark:                  |
 
 
-# Build and Run
+# Build and Run (Without Docker)
 
 ```
 1. Clone the Project
@@ -63,4 +63,16 @@ This tables shows which features that has been implemented by this repository.
 
 3. Run the Project
    $ java -jar /cooperation-project-path/app.jar
+```
+
+# Build and Run (With Docker)
+
+```
+1. Clone the Project
+   $ git clone git@github.com:rizkyjayusman/cooperation.git
+   $ cd cooperation
+
+2. Build and Package the Project
+   $ docker build -t alami-cooperation-app .
+   $ docker-compose up -d --build
 ```
