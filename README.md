@@ -7,8 +7,8 @@ This repository contains about a deposit and loan management application in a vi
 I used these tech stack for create this project with:
 * Java 8
 * [Spring Boot](https://spring.io/projects/spring-boot)
-* PostgreDB
-* MongoDB
+* PostgreDB (as main data storage)
+* MongoDB (as log data storage)
 * [Kafka](https://kafka.apache.org/)
 * Swagger 2
 
