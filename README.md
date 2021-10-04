@@ -26,7 +26,7 @@ This project already have an API Documentation that we create using Swagger 2.
 
 You can read that documentation on : http://localhost:8090/swagger-ui/
 
-You also can test our API using Postman. The Postman file on directory docs/cooperation.postman_collection.json
+You also can test our API using Postman. You can download the postman file [here](https://github.com/rizkyjayusman/cooperation/blob/main/docs/cooperation.postman_collection.json)
 
 
 # Implemented Features
