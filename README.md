@@ -16,7 +16,15 @@ I used these tech stack for create this project with:
 
 <div align='center'>
 
-![Registration Flow - Synchronous Approach](docs/architecture.png)
+![Cooperation Architecture](docs/architecture.png)
+
+</div>
+
+# DB Schema
+
+<div align='center'>
+
+![Cooperation DB Schema](docs/database-schema.png)
 
 </div>
 
