@@ -42,9 +42,18 @@ public class LoanServiceImpl implements LoanService {
         return loanRepository.findAll(pageable);
     }
 
-    @Override
-    public Loan getByMemberId(Long memberId) {
+    private Loan findByMemberId(Long memberId) {
         return loanRepository.getByMemberId(memberId);
+    }
+
+    @Override
+    public Loan getByMemberId(Long memberId) throws BaseException {
+        Loan loan = findByMemberId(memberId);
+        if(loan == null) {
+            throw new BaseException("loan not found");
+        }
+
+        return loan;
     }
 
     @Override
@@ -56,23 +65,19 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public TransactionDto createLoanTransaction(TransactionDto transactionDto) throws BaseException {
         Member member = memberService.getMemberById(transactionDto.getMemberId());
-        if(member == null) {
-            throw new BaseException("member not found");
-        }
-
         BigDecimal diffBalance = getDiffBalance(depositService.getTotalDeposit(), getTotalLoan());
         validateLoan(transactionDto, diffBalance);
 
-        transactionDto.setTransactionType(TransactionTypeEnum.LOAN);
         transactionService.createTransaction(transactionDto);
 
-        Loan loan = loanRepository.getByMemberId(transactionDto.getMemberId());
+        Loan loan = findByMemberId(member.getId());
         if(loan == null) {
-            loan = LoanMapper.createLoan(transactionDto.getMemberId(), new BigDecimal(0));
+            loan = LoanMapper.createLoan(member.getId(), new BigDecimal(0));
         }
 
-        addLoanAmount(loan, transactionDto);
-        loanRepository.save(loan);
+        loan.addAmount(transactionDto);
+        saveLoan(loan);
+
         return transactionDto;
     }
 
@@ -93,15 +98,5 @@ public class LoanServiceImpl implements LoanService {
         if(isOverLimit(transactionDto, totalDeposit)) {
             throw new BaseException("loan was over limit");
         }
-    }
-
-    private void addLoanAmount(Loan loan, TransactionDto transactionDto) {
-        BigDecimal amount = loan.getAmount().add(transactionDto.getAmount());
-        LoanMapper.updateLoan(loan, amount);
-    }
-
-    public void subtractLoanAmount(Loan loan, TransactionDto transactionDto) {
-        BigDecimal amount = loan.getAmount().subtract(transactionDto.getAmount());
-        LoanMapper.updateLoan(loan, amount);
     }
 }

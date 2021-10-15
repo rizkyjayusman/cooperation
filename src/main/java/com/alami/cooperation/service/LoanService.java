@@ -12,9 +12,8 @@ public interface LoanService {
 
     Page<Loan> getLoanList(Pageable pageable);
 
-    Loan getByMemberId(Long memberId);
+    Loan getByMemberId(Long memberId) throws BaseException;
 
     Loan saveLoan(Loan loan);
 
-    void subtractLoanAmount(Loan loan, TransactionDto transactionDto);
 }

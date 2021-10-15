@@ -16,9 +16,8 @@ public interface DepositService {
 
     Page<Deposit> getDepositList(Pageable pageable);
 
-    Deposit getByMemberId(Long memberId);
+    Deposit getByMemberId(Long memberId) throws BaseException;
 
     void saveDeposit(Deposit deposit);
 
-    void subtractBalance(Deposit deposit, TransactionDto transactionDto);
 }

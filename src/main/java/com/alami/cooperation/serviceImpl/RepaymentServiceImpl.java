@@ -31,27 +31,19 @@ public class RepaymentServiceImpl implements RepaymentService {
     @Override
     public TransactionDto createRepaymentTransaction(TransactionDto transactionDto) throws BaseException {
         Member member = memberService.getMemberById(transactionDto.getMemberId());
-        if(member == null) {
-            throw new BaseException("member not found");
-        }
-
-        Loan loan = loanService.getByMemberId(transactionDto.getMemberId());
+        Loan loan = loanService.getByMemberId(member.getId());
 
         validateRepayment(transactionDto, loan);
 
-        transactionDto.setTransactionType(TransactionTypeEnum.REPAYMENT);
         transactionService.createTransaction(transactionDto);
 
-        loanService.subtractLoanAmount(loan, transactionDto);
+        loan.subtractAmount(transactionDto);
         loanService.saveLoan(loan);
+
         return transactionDto;
     }
 
     private void validateRepayment(TransactionDto transactionDto, Loan loan) throws BaseException {
-        if(loan == null) {
-            throw new BaseException("loan not found");
-        }
-
         if(! isPayable(loan)) {
             throw new BaseException("member does not has loan");
         }

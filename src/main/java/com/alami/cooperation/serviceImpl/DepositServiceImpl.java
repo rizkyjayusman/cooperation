@@ -6,7 +6,6 @@ import com.alami.cooperation.entity.Member;
 import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.exception.BaseException;
 import com.alami.cooperation.mapper.DepositMapper;
-import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.DepositRepository;
 import com.alami.cooperation.service.DepositService;
 import com.alami.cooperation.service.MemberService;
@@ -36,32 +35,19 @@ public class DepositServiceImpl implements DepositService {
 
     @Override
     public TransactionDto createDepositTransaction(TransactionDto transactionDto) throws BaseException {
-        transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
+        Member member = memberService.getMemberById(transactionDto.getMemberId());
+
         transactionService.createTransaction(transactionDto);
 
-        Member member = memberService.getMemberById(transactionDto.getMemberId());
-        validateTransactionMember(member);
-
-        Deposit deposit = depositRepository.getByMemberId(transactionDto.getMemberId());
+        Deposit deposit = findByMemberId(member.getId());
         if(deposit == null) {
-            deposit = DepositMapper.createDeposit(transactionDto.getMemberId(), new BigDecimal(0));
+            deposit = DepositMapper.createDeposit(member.getId(), new BigDecimal(0));
         }
 
-        addDepositBalance(deposit, transactionDto);
+        deposit.addBalance(transactionDto);
+        saveDeposit(deposit);
 
-        depositRepository.save(deposit);
         return transactionDto;
-    }
-
-    private void validateTransactionMember(Member member) throws BaseException {
-        if(member == null) {
-            throw new BaseException("member not found");
-        }
-    }
-
-    public void addDepositBalance(Deposit deposit, TransactionDto transactionDto) {
-        BigDecimal balance = deposit.getBalance().add(transactionDto.getAmount());
-        DepositMapper.updateDeposit(deposit, balance);
     }
 
     @Override
@@ -74,20 +60,23 @@ public class DepositServiceImpl implements DepositService {
         return depositRepository.findAll(pageable);
     }
 
-    @Override
-    public Deposit getByMemberId(Long memberId) {
+    public Deposit findByMemberId(Long memberId) {
         return depositRepository.getByMemberId(memberId);
+    }
+
+    @Override
+    public Deposit getByMemberId(Long memberId) throws BaseException {
+        Deposit deposit = findByMemberId(memberId);
+        if(deposit == null) {
+            throw new BaseException("deposit was not found");
+        }
+
+        return deposit;
     }
 
     @Override
     public void saveDeposit(Deposit deposit) {
         deposit.setUpdatedDate(new Date());
         depositRepository.save(deposit);
-    }
-
-    @Override
-    public void subtractBalance(Deposit deposit, TransactionDto transactionDto) {
-        BigDecimal balance = deposit.getBalance().subtract(transactionDto.getAmount());
-        deposit.setBalance(balance);
     }
 }

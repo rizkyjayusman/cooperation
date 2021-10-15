@@ -99,7 +99,7 @@ public class DepositServiceTests {
         transactionDto.setAmount(new BigDecimal(1000000));
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
         transactionDto.setTransactionDate(new Date());
-        depositService.addDepositBalance(deposit, transactionDto);
+        deposit.addBalance(transactionDto);
 
         assertThat(new BigDecimal(1000000)).isEqualTo(deposit.getBalance());
     }
@@ -118,7 +118,7 @@ public class DepositServiceTests {
         transactionDto.setAmount(new BigDecimal(1000000));
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
         transactionDto.setTransactionDate(new Date());
-        depositService.addDepositBalance(deposit, transactionDto);
+        deposit.addBalance(transactionDto);
 
         assertThat(new BigDecimal(2000000)).isEqualTo(deposit.getBalance());
     }
@@ -137,7 +137,7 @@ public class DepositServiceTests {
         transactionDto.setAmount(new BigDecimal(1000000));
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
         transactionDto.setTransactionDate(new Date());
-        depositService.subtractBalance(deposit, transactionDto);
+        deposit.subtractBalance(transactionDto);
 
         assertThat(new BigDecimal(0)).isEqualTo(deposit.getBalance());
     }
@@ -156,7 +156,7 @@ public class DepositServiceTests {
         transactionDto.setAmount(new BigDecimal(500000));
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
         transactionDto.setTransactionDate(new Date());
-        depositService.subtractBalance(deposit, transactionDto);
+        deposit.subtractBalance(transactionDto);
 
         assertThat(new BigDecimal(500000)).isEqualTo(deposit.getBalance());
     }

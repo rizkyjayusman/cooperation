@@ -1,5 +1,6 @@
 package com.alami.cooperation.entity;
 
+import com.alami.cooperation.dto.TransactionDto;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,4 +24,11 @@ public class Loan {
 
     private Date updatedDate;
 
+    public void subtractAmount(TransactionDto transactionDto) {
+        amount = amount.subtract(transactionDto.getAmount());
+    }
+
+    public void addAmount(TransactionDto transactionDto) {
+        amount = amount.add(transactionDto.getAmount());
+    }
 }

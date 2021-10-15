@@ -2,6 +2,7 @@ package com.alami.cooperation.service;
 
 import com.alami.cooperation.dto.MemberDto;
 import com.alami.cooperation.entity.Member;
+import com.alami.cooperation.exception.BaseException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,5 +12,5 @@ public interface MemberService {
 
     MemberDto createMember(MemberDto memberDto);
 
-    Member getMemberById(Long memberId);
+    Member getMemberById(Long memberId) throws BaseException;
 }

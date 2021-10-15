@@ -5,7 +5,9 @@ import com.alami.cooperation.controller.request.TransactionRequest;
 import com.alami.cooperation.controller.response.Response;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Loan;
+import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.exception.BaseException;
+import com.alami.cooperation.mapper.TransactionMapper;
 import com.alami.cooperation.service.LoanService;
 import com.alami.cooperation.vo.Pagination;
 import io.swagger.annotations.Api;
@@ -51,10 +53,7 @@ public class LoanController {
     })
     @PostMapping(produces = "application/json", consumes = "application/json")
     public ResponseEntity<Object> createLoanTransaction(@Validated @RequestBody TransactionRequest transactionRequest) throws BaseException {
-        TransactionDto transactionDto = new TransactionDto();
-        transactionDto.setAmount(transactionRequest.getAmount());
-        transactionDto.setTransactionDate(transactionRequest.getTransactionDate());
-        transactionDto.setMemberId(transactionRequest.getMemberId());
+        TransactionDto transactionDto = TransactionMapper.createTransactionDto(transactionRequest, TransactionTypeEnum.LOAN);
         loanService.createLoanTransaction(transactionDto);
         return success("create loan successfully", null, HttpStatus.OK);
     }

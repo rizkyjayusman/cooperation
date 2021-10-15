@@ -3,7 +3,9 @@ package com.alami.cooperation.controller;
 import com.alami.cooperation.controller.request.TransactionRequest;
 import com.alami.cooperation.controller.response.Response;
 import com.alami.cooperation.dto.TransactionDto;
+import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.exception.BaseException;
+import com.alami.cooperation.mapper.TransactionMapper;
 import com.alami.cooperation.service.RepaymentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,10 +37,7 @@ public class RepaymentController {
     })
     @PostMapping(produces = "application/json", consumes = "application/json")
     public ResponseEntity<Object> createRepaymentTransaction(@Validated @RequestBody TransactionRequest transactionRequest) throws BaseException {
-        TransactionDto transactionDto = new TransactionDto();
-        transactionDto.setAmount(transactionRequest.getAmount());
-        transactionDto.setTransactionDate(transactionRequest.getTransactionDate());
-        transactionDto.setMemberId(transactionRequest.getMemberId());
+        TransactionDto transactionDto = TransactionMapper.createTransactionDto(transactionRequest, TransactionTypeEnum.REPAYMENT);
         repaymentService.createRepaymentTransaction(transactionDto);
         return success("create repayment successfully", null, HttpStatus.OK);
     }

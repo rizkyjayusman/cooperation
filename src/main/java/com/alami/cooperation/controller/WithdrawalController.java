@@ -3,7 +3,9 @@ package com.alami.cooperation.controller;
 import com.alami.cooperation.controller.request.TransactionRequest;
 import com.alami.cooperation.controller.response.Response;
 import com.alami.cooperation.dto.TransactionDto;
+import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.exception.BaseException;
+import com.alami.cooperation.mapper.TransactionMapper;
 import com.alami.cooperation.service.WithdrawalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,10 +34,7 @@ public class WithdrawalController {
     })
     @PostMapping(produces = "application/json", consumes = "application/json")
     public ResponseEntity<Object> createWithdrawalTransaction(@Validated @RequestBody TransactionRequest transactionRequest) throws BaseException {
-        TransactionDto transactionDto = new TransactionDto();
-        transactionDto.setAmount(transactionRequest.getAmount());
-        transactionDto.setTransactionDate(transactionRequest.getTransactionDate());
-        transactionDto.setMemberId(transactionRequest.getMemberId());
+        TransactionDto transactionDto = TransactionMapper.createTransactionDto(transactionRequest, TransactionTypeEnum.WITHDRAWAL);
         withdrawalService.createWithdrawalTransaction(transactionDto);
         return success("create withdrawal successfully", null, HttpStatus.OK);
     }

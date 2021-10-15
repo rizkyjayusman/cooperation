@@ -1,5 +1,7 @@
 package com.alami.cooperation.entity;
 
+import com.alami.cooperation.dto.TransactionDto;
+import com.alami.cooperation.mapper.DepositMapper;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,4 +25,11 @@ public class Deposit {
 
     private Date updatedDate;
 
+    public void addBalance(TransactionDto transactionDto) {
+        balance = balance.add(transactionDto.getAmount());
+    }
+
+    public void subtractBalance(TransactionDto transactionDto) {
+        balance = balance.subtract(transactionDto.getAmount());
+    }
 }

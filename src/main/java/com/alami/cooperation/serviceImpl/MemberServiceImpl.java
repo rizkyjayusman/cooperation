@@ -2,6 +2,7 @@ package com.alami.cooperation.serviceImpl;
 
 import com.alami.cooperation.dto.MemberDto;
 import com.alami.cooperation.entity.Member;
+import com.alami.cooperation.exception.BaseException;
 import com.alami.cooperation.mapper.MemberMapper;
 import com.alami.cooperation.repository.MemberRepository;
 import com.alami.cooperation.service.MemberService;
@@ -34,8 +35,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member getMemberById(Long memberId) {
+    public Member getMemberById(Long memberId) throws BaseException {
         Optional<Member> member = memberRepository.findById(memberId);
-        return member.orElse(null);
+        if(! member.isPresent()) {
+            throw new BaseException("member not found");
+        }
+
+        return member.get();
     }
 }
