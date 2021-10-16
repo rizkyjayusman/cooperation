@@ -24,7 +24,9 @@ I used these tech stack for create this project with:
 
 <div align='center'>
 
-![Cooperation DB Schema](docs/database-schema.png)
+![Cooperation DB Schema](docs/main-db-schema.png)
+
+![Cooperation DB Schema](docs/log-db-schema.png)
 
 </div>
 
