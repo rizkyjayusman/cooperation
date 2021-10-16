@@ -25,11 +25,4 @@ public class Deposit {
 
     private Date updatedDate;
 
-    public void addBalance(TransactionDto transactionDto) {
-        balance = balance.add(transactionDto.getAmount());
-    }
-
-    public void subtractBalance(TransactionDto transactionDto) {
-        balance = balance.subtract(transactionDto.getAmount());
-    }
 }

@@ -3,13 +3,8 @@ package com.alami.cooperation.serviceImpl;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Loan;
 import com.alami.cooperation.entity.Member;
-import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.exception.BaseException;
-import com.alami.cooperation.publisher.TransactionPublisher;
-import com.alami.cooperation.service.LoanService;
-import com.alami.cooperation.service.MemberService;
-import com.alami.cooperation.service.RepaymentService;
-import com.alami.cooperation.service.TransactionService;
+import com.alami.cooperation.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +21,9 @@ public class RepaymentServiceImpl implements RepaymentService {
     private LoanService loanService;
 
     @Autowired
+    private LoanAmountControlService loanAmountControlService;
+
+    @Autowired
     private TransactionService transactionService;
 
     @Override
@@ -37,7 +35,7 @@ public class RepaymentServiceImpl implements RepaymentService {
 
         transactionService.createTransaction(transactionDto);
 
-        loan.subtractAmount(transactionDto);
+        loanAmountControlService.subtractAmount(loan, transactionDto);
         loanService.saveLoan(loan);
 
         return transactionDto;

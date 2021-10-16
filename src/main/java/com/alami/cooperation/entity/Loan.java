@@ -24,11 +24,4 @@ public class Loan {
 
     private Date updatedDate;
 
-    public void subtractAmount(TransactionDto transactionDto) {
-        amount = amount.subtract(transactionDto.getAmount());
-    }
-
-    public void addAmount(TransactionDto transactionDto) {
-        amount = amount.add(transactionDto.getAmount());
-    }
 }

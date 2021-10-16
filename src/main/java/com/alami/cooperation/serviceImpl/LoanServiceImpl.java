@@ -3,15 +3,10 @@ package com.alami.cooperation.serviceImpl;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Loan;
 import com.alami.cooperation.entity.Member;
-import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.exception.BaseException;
 import com.alami.cooperation.mapper.LoanMapper;
-import com.alami.cooperation.publisher.TransactionPublisher;
 import com.alami.cooperation.repository.LoanRepository;
-import com.alami.cooperation.service.DepositService;
-import com.alami.cooperation.service.LoanService;
-import com.alami.cooperation.service.MemberService;
-import com.alami.cooperation.service.TransactionService;
+import com.alami.cooperation.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +28,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private LoanAmountControlService loanAmountControlService;
 
     @Autowired
     private LoanRepository loanRepository;
@@ -75,7 +73,7 @@ public class LoanServiceImpl implements LoanService {
             loan = LoanMapper.createLoan(member.getId(), new BigDecimal(0));
         }
 
-        loan.addAmount(transactionDto);
+        loanAmountControlService.addAmount(loan, transactionDto);
         saveLoan(loan);
 
         return transactionDto;

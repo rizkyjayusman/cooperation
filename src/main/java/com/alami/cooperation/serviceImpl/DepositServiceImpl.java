@@ -3,10 +3,10 @@ package com.alami.cooperation.serviceImpl;
 import com.alami.cooperation.dto.TransactionDto;
 import com.alami.cooperation.entity.Deposit;
 import com.alami.cooperation.entity.Member;
-import com.alami.cooperation.enumtype.TransactionTypeEnum;
 import com.alami.cooperation.exception.BaseException;
 import com.alami.cooperation.mapper.DepositMapper;
 import com.alami.cooperation.repository.DepositRepository;
+import com.alami.cooperation.service.DepositBalanceControlService;
 import com.alami.cooperation.service.DepositService;
 import com.alami.cooperation.service.MemberService;
 import com.alami.cooperation.service.TransactionService;
@@ -27,6 +27,9 @@ public class DepositServiceImpl implements DepositService {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private DepositBalanceControlService depositBalanceControlService;
+
     private final DepositRepository depositRepository;
 
     public DepositServiceImpl(DepositRepository depositRepository) {
@@ -44,7 +47,8 @@ public class DepositServiceImpl implements DepositService {
             deposit = DepositMapper.createDeposit(member.getId(), new BigDecimal(0));
         }
 
-        deposit.addBalance(transactionDto);
+
+        depositBalanceControlService.addBalance(deposit, transactionDto);
         saveDeposit(deposit);
 
         return transactionDto;

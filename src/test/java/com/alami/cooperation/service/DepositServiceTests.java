@@ -29,6 +29,8 @@ public class DepositServiceTests {
 
     private DepositServiceImpl depositService;
 
+    private DepositBalanceControlService depositBalanceControlService;
+
     @Mock
     private DepositRepository depositRepository;
 
@@ -99,7 +101,7 @@ public class DepositServiceTests {
         transactionDto.setAmount(new BigDecimal(1000000));
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
         transactionDto.setTransactionDate(new Date());
-        deposit.addBalance(transactionDto);
+        depositBalanceControlService.addBalance(deposit, transactionDto);
 
         assertThat(new BigDecimal(1000000)).isEqualTo(deposit.getBalance());
     }
@@ -118,7 +120,7 @@ public class DepositServiceTests {
         transactionDto.setAmount(new BigDecimal(1000000));
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
         transactionDto.setTransactionDate(new Date());
-        deposit.addBalance(transactionDto);
+        depositBalanceControlService.addBalance(deposit, transactionDto);
 
         assertThat(new BigDecimal(2000000)).isEqualTo(deposit.getBalance());
     }
@@ -137,7 +139,7 @@ public class DepositServiceTests {
         transactionDto.setAmount(new BigDecimal(1000000));
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
         transactionDto.setTransactionDate(new Date());
-        deposit.subtractBalance(transactionDto);
+        depositBalanceControlService.subtractBalance(deposit, transactionDto);
 
         assertThat(new BigDecimal(0)).isEqualTo(deposit.getBalance());
     }
@@ -156,7 +158,7 @@ public class DepositServiceTests {
         transactionDto.setAmount(new BigDecimal(500000));
         transactionDto.setTransactionType(TransactionTypeEnum.DEPOSIT);
         transactionDto.setTransactionDate(new Date());
-        deposit.subtractBalance(transactionDto);
+        depositBalanceControlService.subtractBalance(deposit, transactionDto);
 
         assertThat(new BigDecimal(500000)).isEqualTo(deposit.getBalance());
     }
