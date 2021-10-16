@@ -49,22 +49,22 @@ This tables shows which features that has been implemented by this repository.
 
 :x: : not yet implemented
 
-| Features                        | Status                              |
-| ------------------------------- | ----------------------------------- |
-| Get All Members                 | :white_check_mark:                  |
-| Add New Member                  | :white_check_mark:                  |
-| Get All Transaction             | :white_check_mark:                  |
-| Create Transaction              | :white_check_mark:                  |
-| Get All Transaction Log         | :white_check_mark:                  |
-| Create Transaction Log          | :white_check_mark:                  |
-| Get All Member's Deposit        | :white_check_mark:                  |
-| Create Deposit                  | :white_check_mark:                  |
-| Create Withdrawal               | :white_check_mark:                  |
-| Get All Member's Loan           | :white_check_mark:                  |
-| Create Loan                     | :white_check_mark:                  |
-| Create Repayment                | :white_check_mark:                  |
-| Unit Test                       | :heavy_exclamation_mark:            |
-| Api Documentation with Swagger  | :white_check_mark:                  |
+| Features                          | Sub Features                    | Status                              |
+| --------------------------------- | ------------------------------- | ----------------------------------- |
+| Member                            | Get All Members                 | :white_check_mark:                  |
+|                                   | Add New Member                  | :white_check_mark:                  |
+| Transaction                       | Get All Transactions            | :white_check_mark:                  |
+|                                   | Create New Transaction          | :white_check_mark:                  |
+| Transaction History               | Get All Transaction Histories   | :white_check_mark:                  |
+|                                   | Create Transaction History      | :white_check_mark:                  |
+| Deposit                           | Get All Member's Deposit        | :white_check_mark:                  |
+|                                   | Create New Deposit              | :white_check_mark:                  |
+| Withdrawal                        | Create Withdrawal               | :white_check_mark:                  |
+| Loan                              | Get All Member's Loan           | :white_check_mark:                  |
+|                                   | Create New Loan                 | :white_check_mark:                  |
+| Repayment                         | Create Loan Repayment           | :white_check_mark:                  |
+| Unit Test                         |                                 | :heavy_exclamation_mark:            |
+| Api Documentation with Swagger    |                                 | :white_check_mark:                  |
 
 
 # Build and Run (Without Docker)
